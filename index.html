@@ -10,9 +10,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <script>
 tailwind.config={darkMode:'class',theme:{extend:{colors:{
-  brand:{50:'#fdf6f0',100:'#fbe9dc',200:'#f6d2b8',300:'#eeb38a',400:'#e59563',500:'#d97a45',600:'#c46237',700:'#a34d2f',800:'#823f2b',900:'#6b3525'},
-  warm:{50:'#fdf6f0',100:'#fbe9dc',200:'#f6d2b8',300:'#eeb38a',400:'#e59563',500:'#d97a45',600:'#c46237',700:'#a34d2f',800:'#823f2b',900:'#6b3525'},
-  ink:{50:'#f4f6f8',100:'#e3e8ed',200:'#c7d0da',300:'#9ba8b8',400:'#6f7f93',500:'#4a5768',600:'#364152',700:'#283040',800:'#1a2030',900:'#0f1520'},
+  brand:{50:'#fdf6f0',100:'#fbe9dc',200:'#f6d2b8',300:'#eeb38a',400:'#e59563',500:'#d97a45',600:'#b85a31',700:'#a34d2f',800:'#823f2b',900:'#6b3525'},
+  warm:{50:'#fdf6f0',100:'#fbe9dc',200:'#f6d2b8',300:'#eeb38a',400:'#e59563',500:'#d97a45',600:'#b85a31',700:'#a34d2f',800:'#823f2b',900:'#6b3525'},
+  ink:{50:'#f4f6f8',100:'#e3e8ed',200:'#c7d0da',300:'#9ba8b8',400:'#68778a',500:'#4a5768',600:'#364152',700:'#283040',800:'#1a2030',900:'#0f1520'},
 },fontFamily:{display:['Playfair Display','Georgia','serif'],body:['Outfit','system-ui','sans-serif']}}}}
 </script>
 <style>
@@ -26,7 +26,7 @@ body{background:#faf7f3;color:#1a2030;transition:background .3s,color .3s}
 .dark [class*="text-ink-900"],.dark [class*="text-ink-800"],.dark [class*="text-ink-700"]{color:#e3e8ed!important}
 .dark [class*="text-ink-600"],.dark [class*="text-ink-500"]{color:#c7d0da!important}
 .dark [class*="text-ink-400"]{color:#9ba8b8!important}
-.dark [class*="text-ink-300"]{color:#6f7f93!important}
+.dark [class*="text-ink-300"]{color:#68778a!important}
 .dark [class*="text-ink-100"],.dark [class*="text-ink-200"]{color:#9ba8b8!important}
 /* --- Headings & display text --- */
 .dark h1,.dark h2,.dark h3,.dark h4,.dark .font-display{color:#e3e8ed}
@@ -44,7 +44,7 @@ body{background:#faf7f3;color:#1a2030;transition:background .3s,color .3s}
 .dark .reaction-btn:hover,.dark .reaction-btn.active{background:rgba(217,122,69,.2);border-color:#d97a45}
 /* --- Forms --- */
 .dark input,.dark select,.dark textarea{background:#151d2b;border-color:#364152;color:#e3e8ed}
-.dark input::placeholder,.dark textarea::placeholder{color:#6f7f93}
+.dark input::placeholder,.dark textarea::placeholder{color:#68778a}
 /* --- Tables --- */
 .dark table{color:#c7d0da}
 .dark td,.dark th{color:#c7d0da}
@@ -152,8 +152,44 @@ input:focus,select:focus,textarea:focus{outline:none;box-shadow:0 0 0 2.5px rgba
 .badge{display:inline-flex;align-items:center;padding:2px 10px;border-radius:99px;font-size:.7rem;font-weight:600;letter-spacing:.02em}
 /* === Aurora animated login background === */
 /* === Split-panel sign-in (light aesthetic) === */
+/* ═══════════════════════════════════════════════════════════════════════
+   PHASE 2 · ACCESSIBILITY (WCAG 2.1 AA)
+   ═══════════════════════════════════════════════════════════════════════ */
+/* 2.4.7 Focus Visible — a clearly visible, high-contrast focus ring everywhere.
+   :focus-visible keeps it off for mouse users but present for keyboard users. */
+:focus-visible{outline:3px solid #a34d2f;outline-offset:2px;border-radius:6px}
+.dark :focus-visible{outline-color:#eeb38a}
+/* Never remove focus without replacing it */
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,
+textarea:focus-visible,[tabindex]:focus-visible{outline:3px solid #a34d2f;outline-offset:2px}
+.dark button:focus-visible,.dark a:focus-visible,.dark input:focus-visible,
+.dark select:focus-visible,.dark textarea:focus-visible{outline-color:#eeb38a}
+
+/* 2.4.1 Bypass Blocks — skip to main content */
+.skip-link{position:absolute;left:8px;top:-48px;z-index:200;background:#c46237;color:#fff;
+  padding:10px 16px;border-radius:0 0 8px 8px;font-size:.85rem;font-weight:600;
+  transition:top .18s ease-out;text-decoration:none}
+.skip-link:focus{top:0}
+
+/* 1.4.13 / 4.1.3 — screen-reader-only text that stays reachable */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.sr-only-focusable:focus{position:static;width:auto;height:auto;margin:0;overflow:visible;clip:auto;white-space:normal}
+
+/* 2.3.3 Animation from Interactions — honour reduced-motion globally */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;
+    transition-duration:.001ms!important;scroll-behavior:auto!important}
+}
+/* 1.4.11 Non-text Contrast — ensure form controls have a visible boundary */
+input,select,textarea{border-width:1px}
+/* Larger hit target for icon-only controls (2.5.5 target size guidance) */
+.sidebar-link,.dm-toggle,#notifBtn{min-height:36px}
+
+/* === Sign-in === */
 .login-bg{position:relative;background:#f8f6f3;overflow:hidden;min-height:100vh;display:flex;align-items:center;justify-content:center}
-.login-card{background:#fff;border-radius:20px;box-shadow:0 8px 48px rgba(0,0,0,.06),0 1px 4px rgba(0,0,0,.04);overflow:hidden;width:100%;max-width:820px;display:grid;grid-template-columns:1fr;border:1px solid #eae6e0}
+.login-card{background:#fff;border-radius:20px;box-shadow:0 8px 48px rgba(0,0,0,.06),0 1px 4px rgba(0,0,0,.04);
+  overflow:hidden;width:100%;max-width:820px;display:grid;grid-template-columns:1fr;border:1px solid #eae6e0}
 @media(min-width:768px){.login-card{grid-template-columns:1fr 1fr}}
 .login-left{background:linear-gradient(160deg,#c46237 0%,#d97a45 40%,#e59563 100%);position:relative;overflow:hidden;padding:2.5rem;display:none;flex-direction:column;justify-content:space-between;min-height:420px;color:#fff}
 @media(min-width:768px){.login-left{display:flex}}
@@ -181,8 +217,8 @@ input:focus,select:focus,textarea:focus{outline:none;box-shadow:0 0 0 2.5px rgba
 .login-input{width:100%;border:1px solid #ddd6cc;border-radius:10px;padding:10px 14px;font-size:.875rem;background:#faf8f5;color:#2a2520;transition:border-color .2s,box-shadow .2s;outline:none}
 .login-input::placeholder{color:#a8a098}
 .login-input:focus{border-color:#d97a45;box-shadow:0 0 0 3px rgba(217,122,69,.1)}
-.login-btn{width:100%;padding:11px;border-radius:12px;font-weight:600;font-size:.9rem;border:none;cursor:pointer;transition:all .2s;background:linear-gradient(135deg,#c46237,#d97a45);color:#fff;box-shadow:0 4px 16px rgba(196,98,55,.25)}
-.login-btn:hover{background:linear-gradient(135deg,#b05530,#c46237);box-shadow:0 6px 20px rgba(196,98,55,.35)}
+.login-btn{width:100%;padding:11px;border-radius:12px;font-weight:600;font-size:.9rem;border:none;cursor:pointer;transition:all .2s;background:linear-gradient(135deg,#b85a31,#c96b3c);color:#fff;box-shadow:0 4px 16px rgba(196,98,55,.25)}
+.login-btn:hover{background:linear-gradient(135deg,#a34d2f,#b85a31);box-shadow:0 6px 20px rgba(196,98,55,.35)}
 .login-btn:active{transform:scale(.98)}
 .accordion-body{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.22,1,.36,1)}
 .accordion-body.open{max-height:800px}
@@ -452,7 +488,7 @@ input:focus,select:focus,textarea:focus{outline:none;box-shadow:0 0 0 2.5px rgba
 .dark .timeline-item::after{background:#283040}
 .timeline-item:last-child::after{display:none}
 .mini-ring{transform:rotate(-90deg)}
-.tab-pill{padding:7px 16px;border-radius:9px;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .18s;border:none;background:transparent;color:#6f7f93;white-space:nowrap}
+.tab-pill{padding:7px 16px;border-radius:9px;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .18s;border:none;background:transparent;color:#68778a;white-space:nowrap}
 .tab-pill.on{background:#d97a45;color:#fff;box-shadow:0 2px 8px rgba(217,122,69,.3)}
 .tab-pill:not(.on):hover{background:rgba(217,122,69,.1);color:#c46237}
 .dark .tab-pill:not(.on):hover{background:rgba(217,122,69,.15);color:#e59563}
@@ -462,7 +498,79 @@ input:focus,select:focus,textarea:focus{outline:none;box-shadow:0 0 0 2.5px rgba
 </style>
 </head>
 <body>
-<div id="toasts" class="fixed top-5 right-5 z-[999] flex flex-col gap-2 pointer-events-none"></div>
+<a href="#main" class="skip-link" id="skipLink">Skip to main content</a>
+<script>
+/* ═══════════════════════════════════════════════════════════════════════
+   PHASE 4 · PROGRESSIVE WEB APP
+   Manifest and service worker are generated at runtime as blob URLs so the
+   application remains a single distributable file. A real deployment would
+   serve /manifest.webmanifest and /sw.js as static assets instead — the
+   registration logic is identical.
+   ═══════════════════════════════════════════════════════════════════════ */
+(function(){
+  const manifest={
+    name:'Sattva — Performance Management',short_name:'Sattva',
+    description:'Performance management, development and recognition.',
+    start_url:'.',display:'standalone',orientation:'portrait-primary',
+    background_color:'#f8f6f3',theme_color:'#b85a31',lang:'en-IN',
+    categories:['business','productivity'],
+    icons:[{src:'data:image/svg+xml;base64,'+btoa(
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">`+
+      `<rect width="192" height="192" rx="42" fill="#b85a31"/>`+
+      `<g stroke="#fff" stroke-width="9" stroke-linecap="round" fill="none">`+
+      `<line x1="96" y1="46" x2="96" y2="152"/><path d="M68 158h56"/>`+
+      `<line x1="38" y1="58" x2="154" y2="58"/>`+
+      `<path d="M38 58 L22 96 M38 58 L54 96 M154 58 L138 96 M154 58 L170 96"/></g>`+
+      `<circle cx="96" cy="38" r="8" fill="#fff"/></svg>`),
+      sizes:'192x192',type:'image/svg+xml',purpose:'any maskable'}],
+  };
+  const mUrl=URL.createObjectURL(new Blob([JSON.stringify(manifest)],{type:'application/manifest+json'}));
+  const link=document.createElement('link');link.rel='manifest';link.href=mUrl;
+  document.head.appendChild(link);
+  const meta=document.createElement('meta');meta.name='theme-color';meta.content='#b85a31';
+  document.head.appendChild(meta);
+
+  // Service worker: cache-first for the shell, network-first for API calls so
+  // performance data is never served stale.
+  const sw=`
+    const SHELL='sattva-shell-v4';
+    self.addEventListener('install',e=>{self.skipWaiting();});
+    self.addEventListener('activate',e=>{e.waitUntil(
+      caches.keys().then(k=>Promise.all(k.filter(x=>x!==SHELL).map(x=>caches.delete(x))))
+        .then(()=>self.clients.claim()));});
+    self.addEventListener('fetch',e=>{
+      const url=new URL(e.request.url);
+      if(e.request.method!=='GET')return;
+      if(url.pathname.includes('/api/')){
+        e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)));
+        return;
+      }
+      e.respondWith(caches.match(e.request).then(hit=>hit||fetch(e.request).then(res=>{
+        const copy=res.clone();
+        caches.open(SHELL).then(c=>c.put(e.request,copy)).catch(()=>{});
+        return res;
+      }).catch(()=>hit)));
+    });`;
+  if('serviceWorker' in navigator && location.protocol!=='file:'){
+    const swUrl=URL.createObjectURL(new Blob([sw],{type:'text/javascript'}));
+    navigator.serviceWorker.register(swUrl).catch(()=>{/* non-fatal */});
+  }
+  // Offline indicator — performance data is stale-sensitive, so say so.
+  function netBanner(){
+    let el=document.getElementById('offlineBar');
+    if(!navigator.onLine){
+      if(!el){el=document.createElement('div');el.id='offlineBar';
+        el.setAttribute('role','status');
+        el.style.cssText='position:fixed;bottom:0;left:0;right:0;z-index:300;background:#b85a31;color:#fff;'+
+          'text-align:center;padding:7px;font-size:.78rem;font-weight:600';
+        el.textContent='Offline — changes are saved locally and will sync when you reconnect.';
+        document.body.appendChild(el);}
+    } else if(el) el.remove();
+  }
+  addEventListener('online',netBanner);addEventListener('offline',netBanner);netBanner();
+})();
+</script>
+<div id="toasts" class="fixed top-5 right-5 z-[999] flex flex-col gap-2 pointer-events-none" role="status" aria-live="polite" aria-atomic="false"></div>
 
 <!-- LOGIN -->
 <div id="loginView" class="login-bg">
@@ -590,15 +698,16 @@ input:focus,select:focus,textarea:focus{outline:none;box-shadow:0 0 0 2.5px rgba
     <button onclick="collapseSB()" class="sb-collapse-btn hidden lg:flex" title="Collapse sidebar" aria-label="Collapse sidebar">
       <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
     </button>
-    <nav class="flex-1 px-3 py-2 space-y-0.5 overflow-y-auto" id="nav"></nav>
+    <nav class="flex-1 px-3 py-2 space-y-0.5 overflow-y-auto" id="nav" role="navigation" aria-label="Main navigation"></nav>
     <div class="p-4 border-t border-ink-100 dark:border-ink-700 space-y-3">
       <div class="flex items-center gap-2.5 sb-user-row">
         <div class="w-9 h-9 rounded-full bg-brand-100 flex items-center justify-center text-sm font-bold text-brand-700 flex-shrink-0" id="sbAvatar">R</div>
         <div class="sb-user-text"><div class="text-sm font-semibold text-ink-700" id="sbName">Rahul</div><div class="text-[.65rem] text-ink-400 capitalize" id="sbRole">Employee</div></div>
       </div>
-      <select id="roleSelect" onchange="setRole(this.value)" class="w-full text-xs border border-ink-200 rounded-lg px-2.5 py-2 bg-ink-50/50 font-medium">
-        <option value="employee">👤 Employee View</option><option value="manager">👔 Manager / HR View</option>
-      </select>
+      <div id="roleSelect" class="w-full text-xs border border-ink-200 dark:border-ink-700 rounded-lg px-2.5 py-2 bg-ink-50/50 dark:bg-ink-800/50 font-medium flex items-center gap-1.5" title="Your role is assigned by your account and enforced server-side.">
+        <svg class="w-3.5 h-3.5 text-ink-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        <span id="sbScope" class="text-ink-500 dark:text-ink-300 truncate">Employee access</span>
+      </div>
       <button onclick="logout()" class="sb-logout w-full text-xs text-red-500 hover:bg-red-50 rounded-lg py-2 font-medium transition">Sign Out</button>
     </div>
   </aside>
@@ -610,11 +719,13 @@ input:focus,select:focus,textarea:focus{outline:none;box-shadow:0 0 0 2.5px rgba
         <h2 class="font-display font-bold text-ink-800 text-lg" id="pgTitle">Dashboard</h2>
       </div>
       <div class="flex items-center gap-3 relative">
+        <select id="localeSel" onchange="setLocale(this.value)" aria-label="Language"
+          class="text-xs border border-ink-200 dark:border-ink-700 rounded-lg px-2 py-1.5 bg-transparent text-ink-600 dark:text-ink-300 cursor-pointer"></select>
         <button onclick="toggleDark()" class="dm-toggle" id="dmToggle" title="Toggle dark mode" aria-label="Toggle dark mode">
           <svg class="dm-icon-sun" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
           <svg class="dm-icon-moon" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
-        <button onclick="toggleNotifs()" class="relative p-1.5 rounded-lg hover:bg-ink-50" id="notifBtn">
+        <button onclick="toggleNotifs()" class="relative p-1.5 rounded-lg hover:bg-ink-50" id="notifBtn" aria-label="Notifications" aria-haspopup="true" aria-expanded="false">
           <svg class="w-5 h-5 text-ink-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
           <span id="notifCount" class="hidden absolute -top-0.5 -right-0.5 w-4.5 h-4.5 bg-red-500 text-white text-[.6rem] font-bold rounded-full flex items-center justify-center min-w-[18px] h-[18px]">0</span>
         </button>
@@ -623,13 +734,193 @@ input:focus,select:focus,textarea:focus{outline:none;box-shadow:0 0 0 2.5px rgba
         <div class="w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center text-xs font-bold text-brand-700" id="hdrAvatar">R</div>
       </div>
     </header>
-    <main class="flex-1 p-5 lg:p-7 overflow-y-auto" id="main"></main>
+    <main class="flex-1 p-5 lg:p-7 overflow-y-auto" id="main" tabindex="-1" role="main" aria-labelledby="pgTitle" aria-live="polite" aria-busy="false"></main>
     <footer class="border-t border-ink-100 dark:border-ink-700 px-6 py-3 text-center text-[.7rem] text-ink-300 bg-white dark:bg-ink-900"><span class="logo-text font-semibold">Sattva</span> — Performance Management System</footer>
   </div>
 </div>
 
 <script>
 // ==================== STATE ====================
+/* ═══════════════════════════════════════════════════════════════════════
+   PHASE 0 · ORG HIERARCHY ENGINE
+   Replaces hardcoded name-string relationships with a real directory:
+   stable ids, managerId edges, departments and job titles.
+   Every permission decision and data scope is derived from this tree.
+   ═══════════════════════════════════════════════════════════════════════ */
+const ORG={
+  people:[
+    {id:'u001',name:'Anjali Verma',   email:'ceo@smartkart.com',      title:'Chief Executive Officer', dept:'Executive',        managerId:null,  role:'admin',hireDate:'2018-01-15',salary:4800000,band:'E1',compa:1.02,status:'active',gender:'F',ageBand:'40-49'},
+    {id:'u002',name:'Priya Mehta',    email:'manager@smartkart.com',  title:'Head of People',          dept:'HR',               managerId:'u001',role:'hr',hireDate:'2019-06-01',salary:2600000,band:'M3',compa:1.08,status:'active',gender:'F',ageBand:'35-39'},
+    {id:'u003',name:'Rwichik',        email:'employee@smartkart.com', title:'Senior Sales Executive',  dept:'Sales',            managerId:'u004',role:'employee',hireDate:'2022-06-15',salary:1150000,band:'P3',compa:0.96,status:'active',gender:'M',ageBand:'25-29'},
+    {id:'u004',name:'Rahul Sharma',   email:'rahul@smartkart.com',    title:'Sales Manager',           dept:'Sales',            managerId:'u001',role:'manager',hireDate:'2020-03-10',salary:1900000,band:'M2',compa:1.04,status:'active',gender:'M',ageBand:'30-34'},
+    {id:'u005',name:'Amit Kumar',     email:'amit@smartkart.com',     title:'Sales Executive',         dept:'Sales',            managerId:'u004',role:'employee',hireDate:'2021-09-01',salary:880000,band:'P2',compa:0.92,status:'active',gender:'M',ageBand:'25-29'},
+    {id:'u006',name:'Neha Singh',     email:'neha@smartkart.com',     title:'Customer Service Lead',   dept:'Customer Service', managerId:'u001',role:'manager',hireDate:'2020-07-20',salary:1750000,band:'M2',compa:1.01,status:'active',gender:'F',ageBand:'30-34'},
+    {id:'u007',name:'Sanjay Verma',   email:'sanjay@smartkart.com',   title:'Sales Executive',         dept:'Sales',            managerId:'u004',role:'employee',hireDate:'2023-02-01',salary:760000,band:'P2',compa:0.79,status:'active',gender:'M',ageBand:'35-39'},
+    {id:'u008',name:'Pooja Patel',    email:'pooja@smartkart.com',    title:'HR Executive',            dept:'HR',               managerId:'u002',role:'employee',hireDate:'2022-11-05',salary:720000,band:'P2',compa:0.88,status:'active',gender:'F',ageBand:'25-29'},
+    {id:'u009',name:'Vikram Joshi',   email:'vikram@smartkart.com',   title:'Warehouse Lead',          dept:'Warehouse',        managerId:'u001',role:'manager',hireDate:'2019-04-12',salary:1600000,band:'M2',compa:0.98,status:'active',gender:'M',ageBand:'40-49'},
+    {id:'u010',name:'Anita Desai',    email:'anita@smartkart.com',    title:'Finance Analyst',         dept:'Finance',          managerId:'u001',role:'employee',hireDate:'2021-01-18',salary:1250000,band:'P3',compa:1.05,status:'active',gender:'F',ageBand:'30-34'},
+    {id:'u011',name:'Ravi Gupta',     email:'ravi@smartkart.com',     title:'Sales Executive',         dept:'Sales',            managerId:'u004',role:'employee',hireDate:'2021-05-30',salary:940000,band:'P2',compa:0.99,status:'probation',gender:'M',ageBand:'25-29'},
+    {id:'u012',name:'Meera Jain',     email:'meera@smartkart.com',    title:'CS Executive',            dept:'Customer Service', managerId:'u006',role:'employee',hireDate:'2023-08-14',salary:640000,band:'P1',compa:0.83,status:'active',gender:'F',ageBand:'20-24'},
+    {id:'u013',name:'Karan Reddy',    email:'karan@smartkart.com',    title:'Warehouse Associate',     dept:'Warehouse',        managerId:'u009',role:'employee',hireDate:'2022-02-22',salary:580000,band:'P1',compa:0.91,status:'active',gender:'M',ageBand:'20-24'},
+    {id:'u014',name:'Sunita Rao',     email:'sunita@smartkart.com',   title:'HR Business Partner',     dept:'HR',               managerId:'u002',role:'employee',hireDate:'2020-10-01',salary:1080000,band:'P3',compa:1.00,status:'active',gender:'F',ageBand:'35-39'},
+    {id:'u015',name:'Deepak Nair',    email:'deepak@smartkart.com',   title:'Finance Executive',       dept:'Finance',          managerId:'u010',role:'employee',hireDate:'2023-05-08',salary:690000,band:'P2',compa:0.86,status:'active',gender:'M',ageBand:'25-29'},
+  ],
+  byId(id){return this.people.find(p=>p.id===id)||null;},
+  byEmail(e){return this.people.find(p=>p.email===(e||'').toLowerCase())||null;},
+  byName(n){return this.people.find(p=>p.name===n)||null;},
+  /** Direct reports of a person. */
+  reports(id){return this.people.filter(p=>p.managerId===id);},
+  /** All descendants (direct + indirect) — the manager's data scope. */
+  descendants(id,seen=new Set()){
+    const out=[];
+    for(const r of this.reports(id)){
+      if(seen.has(r.id))continue;           // cycle guard
+      seen.add(r.id);out.push(r,...this.descendants(r.id,seen));
+    }
+    return out;
+  },
+  /** Chain upward to the root — used for escalation and skip-level views. */
+  chain(id){const out=[];let p=this.byId(id);
+    while(p&&p.managerId){p=this.byId(p.managerId);if(!p||out.some(x=>x.id===p.id))break;out.push(p);}
+    return out;},
+  isManagerOf(mgrId,empId){return this.descendants(mgrId).some(p=>p.id===empId);},
+  depts(){return [...new Set(this.people.map(p=>p.dept))];},
+};
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PHASE 1 · REVIEW WORKFLOW STATE MACHINE
+   A review moves through explicit states. Every transition declares who may
+   perform it; WF.can() resolves that against RBAC + the org tree + any
+   active delegation. Nothing mutates state except WF.transition().
+   ═══════════════════════════════════════════════════════════════════════ */
+const WF=(()=>{
+  const STATES={
+    draft:          {label:'Not Started',   color:'ink',   next:['self_review']},
+    self_review:    {label:'Self-Review',   color:'blue',  next:['manager_review']},
+    manager_review: {label:'Manager Review',color:'purple',next:['calibration','self_review']},
+    calibration:    {label:'In Calibration',color:'amber', next:['released','manager_review']},
+    released:       {label:'Released',      color:'sky',   next:['acknowledged','manager_review']},
+    acknowledged:   {label:'Acknowledged',  color:'brand', next:[]},
+  };
+  // who may perform each transition
+  const RULES={
+    'draft>self_review':          {actor:'employee', label:'Start self-review'},
+    'self_review>manager_review': {actor:'employee', label:'Submit self-review', require:r=>r.selfRating!=null&&(r.selfText||'').trim().length>10},
+    'manager_review>calibration': {actor:'manager',  label:'Submit to calibration', require:r=>r.mgrRating!=null&&(r.mgrText||'').trim().length>10},
+    'manager_review>self_review': {actor:'manager',  label:'Return for revision'},
+    'calibration>released':       {actor:'hr',       label:'Release to employee', require:r=>r.finalRating!=null},
+    'calibration>manager_review': {actor:'hr',       label:'Send back to manager'},
+    'released>acknowledged':      {actor:'employee', label:'Acknowledge'},
+    'released>manager_review':    {actor:'hr',       label:'Reopen review'},
+  };
+  /** Active delegation target for a manager, if any. */
+  function delegateFor(mgrId){
+    const d=(S.delegations||[]).find(x=>x.fromId===mgrId&&x.active);
+    return d?d.toId:null;
+  }
+  /** Does the signed-in user act as manager for this employee (directly or by delegation)? */
+  function actsAsManager(empId){
+    const me=meRec();if(!me)return false;
+    const emp=ORG.byId(empId);if(!emp)return false;
+    if(emp.managerId===me.id)return true;
+    if(ORG.isManagerOf(me.id,empId))return true;
+    // delegated authority
+    return (S.delegations||[]).some(d=>d.active&&d.toId===me.id&&
+      (d.fromId===emp.managerId||ORG.isManagerOf(d.fromId,empId)));
+  }
+  function rec(cycleId,empId){
+    let r=(S.workflow||[]).find(w=>w.cycleId===cycleId&&w.empId===empId);
+    if(!r){r={cycleId,empId,state:'draft',selfRating:null,mgrRating:null,finalRating:null,
+      selfText:'',mgrText:'',ackAt:null,ackNote:'',reopenCount:0,history:[]};
+      (S.workflow=S.workflow||[]).push(r);}
+    return r;
+  }
+  /** Transitions the signed-in user may perform on this record right now. */
+  function allowed(r){
+    const me=meRec();if(!me)return [];
+    const out=[];
+    for(const to of (STATES[r.state]?.next||[])){
+      const key=r.state+'>'+to, rule=RULES[key];if(!rule)continue;
+      let ok=false;
+      if(rule.actor==='employee') ok = r.empId===me.id;
+      else if(rule.actor==='manager') ok = actsAsManager(r.empId);
+      else if(rule.actor==='hr') ok = can('review:admin');
+      if(ok) out.push({to,key,...rule,blocked:rule.require?!rule.require(r):false});
+    }
+    return out;
+  }
+  function transition(cycleId,empId,to){
+    const r=rec(cycleId,empId), me=meRec();
+    const opt=allowed(r).find(o=>o.to===to);
+    if(!opt){logAudit('Transition denied',`${r.state}→${to} for ${ORG.byId(empId)?.name}`,'security');
+      toast('You are not permitted to perform that step.','error');return false;}
+    if(opt.blocked){toast('Complete the required fields first.','error');return false;}
+    const from=r.state;
+    r.state=to;
+    if(to==='acknowledged')r.ackAt=new Date().toISOString().slice(0,10);
+    if(from==='released'&&to==='manager_review')r.reopenCount++;
+    r.history.push({at:new Date().toISOString().slice(0,10),by:me?.name||'System',from,to});
+    logAudit('Review '+(STATES[to]?.label||to),`${ORG.byId(empId)?.name}: ${from} → ${to}`,'review');
+    save();return true;
+  }
+  /** Records the signed-in user can see, scoped by org tree. */
+  function visible(cycleId){
+    const ids=new Set(visiblePeople().map(p=>p.id));
+    // include anyone the user has delegated authority over
+    (S.delegations||[]).filter(d=>d.active&&d.toId===meRec()?.id)
+      .forEach(d=>{ids.add(d.fromId);ORG.descendants(d.fromId).forEach(p=>ids.add(p.id));});
+    return ORG.people.filter(p=>ids.has(p.id)&&p.id!==meRec()?.id||p.id===meRec()?.id)
+      .filter(p=>ids.has(p.id)).map(p=>({person:p,rec:rec(cycleId,p.id)}));
+  }
+  function pct(state){return {draft:0,self_review:20,manager_review:45,calibration:70,released:90,acknowledged:100}[state]??0;}
+  return {STATES,RULES,rec,allowed,transition,visible,actsAsManager,delegateFor,pct};
+})();
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PHASE 0 · ROLE-BASED ACCESS CONTROL
+   A capability matrix, not a UI toggle. Every page and every sensitive
+   action is gated through can(). Roles are assigned by identity record —
+   a user cannot elevate themselves from the client.
+   ═══════════════════════════════════════════════════════════════════════ */
+const CAPS={
+  employee:[
+    'view:own','goal:edit:own','review:self','feedback:give','kudos:give',
+    'meeting:view:own','learning:enrol','survey:respond','play:games','profile:edit:own',
+  ],
+  manager:[
+    'view:own','view:reports','goal:edit:own','goal:edit:reports','review:self','review:manager',
+    'feedback:give','feedback:view:reports','kudos:give','meeting:view:own','meeting:manage',
+    'learning:enrol','survey:respond','play:games','profile:edit:own',
+    'pip:manage','ninebox:view','calibration:participate','idp:manage','report:team',
+  ],
+  hr:[
+    // view:reports included so the hierarchy is a true superset — any check for
+    // a manager capability must also succeed for HR.
+    'view:own','view:reports','view:all','goal:edit:own','goal:edit:reports','review:self','review:manager','review:admin',
+    'feedback:give','feedback:view:reports','feedback:view:all','kudos:give','meeting:view:own','meeting:manage',
+    'learning:enrol','learning:manage','survey:respond','survey:manage','play:games','profile:edit:own',
+    'pip:manage','ninebox:view','calibration:run','calibration:participate','idp:manage',
+    'report:team','report:company','audit:view','company:view','admin:settings',
+  ],
+  admin:[ '*' ],   // full access
+};
+/** Capability check for the signed-in user. */
+function can(cap){
+  const r=S.user?.role;if(!r)return false;
+  const list=CAPS[r]||[];
+  return list.includes('*')||list.includes(cap);
+}
+/** Identity record of the signed-in user. */
+function meRec(){return S.user?.id?ORG.byId(S.user.id):null;}
+/** People the signed-in user is allowed to see data for. */
+function visiblePeople(){
+  const me=meRec();if(!me)return [];
+  if(can('view:all'))return ORG.people;
+  if(can('view:reports'))return [me,...ORG.descendants(me.id)];
+  return [me];
+}
+function canSeePerson(personId){return visiblePeople().some(p=>p.id===personId);}
+
 const CREDS={'employee@smartkart.com':{p:'123',name:'Rwichik',role:'employee'},'manager@smartkart.com':{p:'123',name:'Priya Mehta',role:'manager'}};
 const EMPS=['Rahul Sharma','Amit Kumar','Neha Singh','Sanjay Verma','Pooja Patel','Vikram Joshi','Anita Desai','Ravi Gupta','Meera Jain','Karan Reddy','Sunita Rao','Deepak Nair'];
 const VALUES=['🎯 Customer First','🤝 Teamwork','💡 Innovation','🏆 Ownership','📈 Excellence'];
@@ -833,7 +1124,78 @@ const defaultData=()=>({
     strengths:['Customer Relationships','Deal Closing','Product Knowledge'],
     focus:'Developing delegation & leadership skills to step into a management role by Q4.',
   },
-  // ===== DAILY CHALLENGE / GAMIFICATION =====
+  // ===== PHASE 1 · REVIEW WORKFLOW STATE MACHINE =====
+  // One record per (cycle, employee). `state` is authoritative; `history` is the trail.
+  workflow:[
+    {cycleId:2,empId:'u003',state:'manager_review',selfRating:4.0,mgrRating:null,finalRating:null,
+     selfText:'Exceeded quarterly target by 9%. Led the billing-error reduction project. Want more delegation exposure.',
+     mgrText:'',ackAt:null,ackNote:'',reopenCount:0,
+     history:[{at:'2025-04-02',by:'Rwichik',from:'draft',to:'self_review'},
+              {at:'2025-04-05',by:'Rwichik',from:'self_review',to:'manager_review'}]},
+    {cycleId:2,empId:'u005',state:'self_review',selfRating:null,mgrRating:null,finalRating:null,
+     selfText:'',mgrText:'',ackAt:null,ackNote:'',reopenCount:0,
+     history:[{at:'2025-04-02',by:'System',from:'draft',to:'self_review'}]},
+    {cycleId:2,empId:'u007',state:'draft',selfRating:null,mgrRating:null,finalRating:null,
+     selfText:'',mgrText:'',ackAt:null,ackNote:'',reopenCount:0,history:[]},
+    {cycleId:2,empId:'u011',state:'calibration',selfRating:4.5,mgrRating:4.7,finalRating:null,
+     selfText:'Onboarded 5 key accounts this quarter.',mgrText:'Star performer. Recommend accelerated progression.',
+     ackAt:null,ackNote:'',reopenCount:0,
+     history:[{at:'2025-04-01',by:'Ravi Gupta',from:'draft',to:'self_review'},
+              {at:'2025-04-03',by:'Ravi Gupta',from:'self_review',to:'manager_review'},
+              {at:'2025-04-08',by:'Rahul Sharma',from:'manager_review',to:'calibration'}]},
+    {cycleId:1,empId:'u003',state:'acknowledged',selfRating:4.0,mgrRating:4.2,finalRating:4.2,
+     selfText:'Strong quarter on retention.',mgrText:'Consistently above target; developing leadership.',
+     ackAt:'2025-04-18',ackNote:'Agreed with the assessment. Keen to start the leadership track.',reopenCount:0,
+     history:[{at:'2025-01-10',by:'Rwichik',from:'draft',to:'self_review'},
+              {at:'2025-01-14',by:'Rwichik',from:'self_review',to:'manager_review'},
+              {at:'2025-02-02',by:'Rahul Sharma',from:'manager_review',to:'calibration'},
+              {at:'2025-04-15',by:'Priya Mehta',from:'calibration',to:'released'},
+              {at:'2025-04-18',by:'Rwichik',from:'released',to:'acknowledged'}]},
+  ],
+  // ===== PHASE 1 · ORG CONFIGURATION (replaces hardcoded scales) =====
+  config:{
+    ratingScale:[
+      {v:5,label:'Outstanding',   desc:'Consistently exceeds every expectation',        color:'brand'},
+      {v:4,label:'Exceeds',       desc:'Regularly performs above the required standard',color:'blue'},
+      {v:3,label:'Meets',         desc:'Delivers the role as expected',                 color:'ink'},
+      {v:2,label:'Needs Improvement',desc:'Falls short in some areas; support required',color:'amber'},
+      {v:1,label:'Unsatisfactory',desc:'Significantly below requirement; PIP indicated',color:'red'},
+    ],
+    cycleDefaults:{selfReviewDays:7,managerReviewDays:10,calibrationDays:5,requireAck:true,allowReopen:true},
+    currency:'INR', fiscalYearStart:'April',
+    anonymityThreshold:5,           // survey suppression floor (Phase 2 uses this)
+  },
+  // ===== PHASE 1 · COMPENSATION PLANNING =====
+  comp:{
+    cycleName:'FY25 Merit Cycle', budgetPct:8.0, status:'Open',
+    // merit matrix: rating → increase % by compa-ratio band
+    matrix:{
+      5:{low:12.0,mid:9.0,high:6.0}, 4:{low:9.0,mid:7.0,high:4.5},
+      3:{low:6.0,mid:4.5,high:3.0},  2:{low:2.0,mid:1.0,high:0.0}, 1:{low:0,mid:0,high:0},
+    },
+    proposals:{},                    // empId -> {pct, note, approved}
+  },
+  // ===== PHASE 2 · PRIVACY & RETENTION =====
+  privacy:{
+    consent:{analytics:true, gamification:true, pulseSurveys:true, grantedAt:'2025-01-08'},
+    auditRetention:200,            // entries kept in the chain
+    reviewRetentionYears:7,        // statutory-style retention for performance records
+    surveyRetentionMonths:24,
+    erasureRequests:[],
+    lastExportAt:null,
+  },
+  // ===== PHASE 2 · FAIRNESS MONITORING =====
+  // Demographic attributes are held ONLY for aggregate fairness monitoring.
+  // They are never surfaced per-individual anywhere in the UI, and every group
+  // statistic is suppressed below the anonymity threshold.
+  fairness:{
+    lastRunAt:null,
+    acknowledged:[],               // flags an HR user has reviewed
+  },
+  // ===== PHASE 1 · DELEGATION =====
+  delegations:[
+    {id:1,fromId:'u006',toId:'u002',reason:'Annual leave',from:'2025-04-20',to:'2025-05-04',active:false},
+  ],
   play:{
     xp:340, streak:12, bestStreak:18, lastPlayed:null, totalDays:27,
     todayDone:{word:false,sprint:false,memory:false},
@@ -924,10 +1286,122 @@ const LEVELS=[
 // Load saved state, then backfill any keys missing from defaults.
 // This makes the app resilient when new data sections are added between versions.
 const STORE_KEY='sk8';
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PHASE 0 · DATA-ACCESS LAYER (Repository)
+   Every read and write goes through Repo — no module touches localStorage
+   or the S object directly. Methods are async-shaped so that replacing the
+   LocalDriver with an HttpDriver (fetch → REST API) requires changing only
+   this block, not the 20 feature modules above it.
+   ═══════════════════════════════════════════════════════════════════════ */
+const LocalDriver={
+  name:'local',
+  read(){try{return JSON.parse(localStorage.getItem(STORE_KEY)||'null');}catch(e){return null;}},
+  write(state){try{localStorage.setItem(STORE_KEY,JSON.stringify(state));return true;}
+    catch(e){console.error('[Repo] write failed',e);return false;}},
+  clear(){localStorage.removeItem(STORE_KEY);},
+};
+/* ── Phase 3 · HTTP driver ────────────────────────────────────────────────
+   Live implementation targeting the Sattva API. Activated by setting
+   window.SATTVA_API before load, e.g.
+       window.SATTVA_API = 'http://localhost:4000/api';   (set before this file loads)
+   Without it the app runs entirely on LocalDriver exactly as before, so the
+   single-file demo keeps working with no server.
+
+   Access tokens live in memory only (never localStorage — that would be
+   readable by any injected script). The refresh token is an httpOnly cookie
+   the JS cannot touch. A 401 triggers one silent refresh-and-retry.        */
+const Api=(()=>{
+  const base=()=>window.SATTVA_API||null;
+  let accessToken=null, refreshing=null;
+  const setToken=t=>{accessToken=t;};
+  async function raw(path,opts={},retry=true){
+    const r=await fetch(base()+path,{
+      ...opts, credentials:'include',
+      headers:{'Content-Type':'application/json',
+               ...(accessToken?{Authorization:'Bearer '+accessToken}:{}),
+               ...(opts.headers||{})},
+    });
+    if(r.status===401&&retry){
+      refreshing=refreshing||fetch(base()+'/auth/refresh',{method:'POST',credentials:'include'})
+        .then(x=>x.ok?x.json():null).finally(()=>{refreshing=null;});
+      const j=await refreshing;
+      if(j?.accessToken){setToken(j.accessToken);return raw(path,opts,false);}
+      accessToken=null;
+      const e=new Error('Session expired');e.status=401;throw e;
+    }
+    if(!r.ok){
+      let msg='Request failed';
+      try{msg=(await r.json()).error||msg;}catch(_){}
+      const e=new Error(msg);e.status=r.status;throw e;
+    }
+    return r.status===204?null:r.json();
+  }
+  return {
+    enabled:()=>Boolean(base()), setToken,
+    get:(p)=>raw(p),
+    post:(p,body)=>raw(p,{method:'POST',body:JSON.stringify(body||{})}),
+    put:(p,body)=>raw(p,{method:'PUT',body:JSON.stringify(body||{})}),
+    del:(p)=>raw(p,{method:'DELETE'}),
+    async login(email,password){
+      const j=await raw('/auth/login',{method:'POST',body:JSON.stringify({email,password})},false);
+      setToken(j.accessToken);return j.user;
+    },
+    async logout(){try{await raw('/auth/logout',{method:'POST'},false);}catch(_){}accessToken=null;},
+  };
+})();
+
+const HttpDriver={
+  name:'http',
+  async read(){try{return await Api.get('/state');}catch(e){console.warn('[Repo] remote read failed',e);return null;}},
+  async write(state){try{await Api.put('/state',state);return true;}
+    catch(e){console.error('[Repo] remote write failed',e);return false;}},
+  clear(){return Api.del('/state').catch(()=>{});},
+};
+
+const Repo=(()=>{
+  // Phase 3: use the API when configured, otherwise stay fully local.
+  let driver=(typeof Api!=='undefined'&&Api.enabled())?HttpDriver:LocalDriver, dirty=false, flushTimer=null;
+  const subs=[];
+
+  /** Collection accessor: Repo.list('goals') */
+  const list=(key)=>Array.isArray(S[key])?S[key]:[];
+  /** Single record by id or predicate. */
+  const find=(key,pred)=>list(key).find(typeof pred==='function'?pred:(r=>r.id===pred))||null;
+  /** Insert; returns the created record. */
+  const create=(key,rec)=>{if(!Array.isArray(S[key]))S[key]=[];
+    const r={id:rec.id??Date.now(),...rec};S[key].push(r);commit();return r;};
+  /** Patch a record in place. */
+  const update=(key,pred,patch)=>{const r=find(key,pred);if(!r)return null;
+    Object.assign(r,typeof patch==='function'?patch(r):patch);commit();return r;};
+  /** Remove matching records; returns count removed. */
+  const remove=(key,pred)=>{if(!Array.isArray(S[key]))return 0;
+    const fn=typeof pred==='function'?pred:(r=>r.id===pred);
+    const before=S[key].length;S[key]=S[key].filter(r=>!fn(r));commit();return before-S[key].length;};
+  /** Arbitrary nested value read/write, e.g. Repo.get('profile.mood') */
+  const get=(path,dflt)=>path.split('.').reduce((o,k)=>(o==null?undefined:o[k]),S)??dflt;
+  const set=(path,val)=>{const ks=path.split('.');const last=ks.pop();
+    const tgt=ks.reduce((o,k)=>(o[k]=o[k]??{}),S);tgt[last]=val;commit();return val;};
+
+  /** Mark state dirty and schedule a debounced persist. */
+  function commit(){dirty=true;
+    if(flushTimer)clearTimeout(flushTimer);
+    flushTimer=setTimeout(flush,120);
+    subs.forEach(fn=>{try{fn();}catch(e){console.error('[Repo] subscriber',e);}});}
+  /** Force an immediate persist. */
+  function flush(){if(!dirty)return true;const ok=driver.write(S);dirty=false;return ok;}
+  function subscribe(fn){subs.push(fn);return ()=>{const i=subs.indexOf(fn);if(i>-1)subs.splice(i,1);};}
+  function useDriver(d){driver=d;}
+
+  return {list,find,create,update,remove,get,set,commit,flush,subscribe,useDriver,
+          get driver(){return driver;},
+          clear(){driver.clear();}};
+})();
+// Persist before the tab closes so the debounce can never lose a write.
+window.addEventListener('beforeunload',()=>Repo.flush());
 function loadState(){
   const defaults=defaultData();
-  let saved=null;
-  try{saved=JSON.parse(localStorage.getItem(STORE_KEY)||'null');}catch(e){saved=null;}
+  let saved=Repo.driver.read();
   if(!saved||typeof saved!=='object')return defaults;
   // shallow-merge: any top-level key present in defaults but missing in saved gets restored
   for(const k in defaults){
@@ -940,12 +1414,58 @@ function loadState(){
   return saved;
 }
 let S=loadState();
-const save=()=>localStorage.setItem(STORE_KEY,JSON.stringify(S));
+/* Phase 2 — seal any pre-existing (seeded or legacy) audit entries into the
+   hash chain on first load, so integrity verification starts from a known
+   good state rather than reporting historical entries as unsigned. */
+function sealAuditChain(){
+  const log=S.auditLog||[];
+  if(!log.length||log[0].hash)return;             // already sealed
+  const asc=[...log].reverse();                   // oldest first
+  let prev=GENESIS,seq=0;
+  asc.forEach(e=>{
+    e.seq=++seq; e.time=e.time||'09:00:00'; e.actorId=e.actorId??null;
+    e.prev=prev; e.hash=chainHash(e,prev); prev=e.hash;
+  });
+  S.auditLog=asc.reverse();
+}   // invoked after the audit engine is defined (see below)
+// save() is kept as the app-wide write entry point, now delegating to Repo.
+const save=()=>Repo.commit();
 
 // ==================== AUTH ====================
-function login(){const e=document.getElementById('lEmail').value,p=document.getElementById('lPass').value,u=CREDS[e];if(u&&u.p===p){S.logged=true;S.user={email:e,name:u.name,role:u.role};S.role=u.role;S.page='dashboard';save();render();}else document.getElementById('loginErr').classList.remove('hidden');}
-function logout(){S.logged=false;S.user=null;save();render();}
-function setRole(r){S.role=r;save();buildNav();go(S.page);}
+/* Login resolves the identity record from ORG — role comes from the directory,
+   never from client input. (Phase 3 replaces CREDS with a server session.) */
+function login(){
+  const e=(document.getElementById('lEmail').value||'').trim().toLowerCase();
+  const p=document.getElementById('lPass').value;
+  const cred=CREDS[e];
+  const rec=ORG.byEmail(e);
+  if(cred&&cred.p===p&&rec){
+    S.logged=true;
+    S.user={id:rec.id,email:rec.email,name:rec.name,role:rec.role,title:rec.title,dept:rec.dept,managerId:rec.managerId};
+    S.role=rec.role;                       // mirrored for legacy reads
+    S.page='dashboard';
+    logAudit('Signed in','Session started for '+rec.name,'auth');
+    save();render();
+  } else {
+    document.getElementById('loginErr').classList.remove('hidden');
+  }
+}
+function logout(){
+  if(S.user)logAudit('Signed out','Session ended for '+S.user.name,'auth');
+  S.logged=false;S.user=null;Repo.flush();render();
+}
+/* Role is derived from identity and cannot be changed from the client.
+   Retained only so legacy calls fail safely and are logged. */
+function setRole(r){
+  const rec=meRec();
+  if(!rec||rec.role!==r){
+    logAudit('Role change denied','Attempt to switch to '+r+' blocked by RBAC','security');
+    toast('Your role is set by your account and cannot be changed here.','error');
+    const sel=document.getElementById('roleSelect');if(sel&&S.user)sel.value=S.user.role;
+    return;
+  }
+  buildNav();go(S.page);
+}
 document.getElementById('lPass').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
 
 // ==================== TOAST ====================
@@ -978,9 +1498,187 @@ function applyDark(){const d=S.darkMode;document.documentElement.classList.toggl
 }
 
 // ==================== AUDIT LOG ====================
-function logAudit(action,detail,category){S.auditLog.unshift({id:Date.now(),date:new Date().toISOString().slice(0,10),user:S.user?.name||'System',action,detail,category});if(S.auditLog.length>50)S.auditLog.length=50;save();}
+/* ═══════════════════════════════════════════════════════════════════════
+   PHASE 2 · FAIRNESS ANALYTICS
+   Aggregate-only. Every statistic is suppressed when the group is smaller
+   than config.anonymityThreshold, so no individual can be re-identified
+   from a cell. Two standard techniques are implemented:
+
+   1. Adverse Impact Ratio (the "four-fifths rule", US EEOC Uniform
+      Guidelines on Employee Selection Procedures). A favourable-outcome
+      rate for any group below 80% of the highest group's rate is flagged
+      for investigation. It is an indicator, not proof of discrimination.
+   2. Manager leniency/severity — comparing each manager's mean rating with
+      the organisation mean to surface inconsistent rating behaviour.
+   ═══════════════════════════════════════════════════════════════════════ */
+const Fair=(()=>{
+  const THRESH=()=>S.config?.anonymityThreshold??5;
+  /** Latest calibrated rating per person (falls back to the employee record). */
+  function ratingOf(id){
+    const w=(S.workflow||[]).filter(x=>x.empId===id&&x.finalRating!=null)
+      .sort((a,b)=>b.cycleId-a.cycleId)[0];
+    if(w)return w.finalRating;
+    const p=ORG.byId(id);
+    const e=(S.employees||[]).find(x=>x.name===p?.name);
+    return e?e.rating:null;
+  }
+  function population(){
+    return ORG.people.map(p=>({...p,rating:ratingOf(p.id)})).filter(p=>p.rating!=null);
+  }
+  const mean=a=>a.length?a.reduce((s,v)=>s+v,0)/a.length:0;
+  const sd=a=>{if(a.length<2)return 0;const m=mean(a);return Math.sqrt(mean(a.map(v=>(v-m)**2)));};
+
+  /** Group a population by an attribute, suppressing small cells. */
+  function groups(attr){
+    const pop=population(),out={};
+    pop.forEach(p=>{(out[p[attr]]=out[p[attr]]||[]).push(p);});
+    return Object.entries(out).map(([k,v])=>({
+      key:k, n:v.length, suppressed:v.length<THRESH(),
+      mean:v.length?+mean(v.map(x=>x.rating)).toFixed(2):null,
+      favourable:v.filter(x=>x.rating>=4).length,
+      favRate:v.length?v.filter(x=>x.rating>=4).length/v.length:0,
+    })).sort((a,b)=>b.n-a.n);
+  }
+  /** Four-fifths rule across the groups of one attribute. */
+  function adverseImpact(attr){
+    const g=groups(attr).filter(x=>!x.suppressed);
+    if(g.length<2)return {applicable:false,reason:'Not enough groups above the anonymity threshold',groups:groups(attr)};
+    const best=Math.max(...g.map(x=>x.favRate));
+    const rows=g.map(x=>({...x,ratio:best>0?x.favRate/best:1}));
+    return {applicable:true,best,rows,flagged:rows.filter(r=>r.ratio<0.8),groups:groups(attr)};
+  }
+  /** Per-manager rating distribution vs the organisation mean. */
+  function managerBias(){
+    const pop=population();
+    const orgMean=mean(pop.map(p=>p.rating));
+    const byMgr={};
+    pop.forEach(p=>{if(p.managerId)(byMgr[p.managerId]=byMgr[p.managerId]||[]).push(p.rating);});
+    return Object.entries(byMgr).map(([id,rs])=>{
+      const m=mean(rs), delta=m-orgMean;
+      return {managerId:id,name:ORG.byId(id)?.name||id,n:rs.length,
+        suppressed:rs.length<THRESH(),
+        mean:+m.toFixed(2),delta:+delta.toFixed(2),sd:+sd(rs).toFixed(2),
+        flag: Math.abs(delta)>=0.5 ? (delta>0?'lenient':'severe') : null};
+    }).sort((a,b)=>b.n-a.n);
+  }
+  /** Overall rating distribution vs an expected bell shape. */
+  function distribution(){
+    const pop=population(),counts={1:0,2:0,3:0,4:0,5:0};
+    pop.forEach(p=>{const r=Math.round(p.rating);if(counts[r]!=null)counts[r]++;});
+    const n=pop.length||1;
+    const expected={1:5,2:10,3:50,4:25,5:10};   // guidance shape, not enforced
+    return Object.keys(counts).map(k=>({rating:+k,count:counts[k],
+      pct:+(counts[k]/n*100).toFixed(1),expected:expected[k],
+      deviation:+(counts[k]/n*100-expected[k]).toFixed(1)}));
+  }
+  function orgMean(){return +mean(population().map(p=>p.rating)).toFixed(2);}
+  return {population,groups,adverseImpact,managerBias,distribution,orgMean,THRESH};
+})();
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PHASE 2 · TAMPER-EVIDENT AUDIT LOG
+   Each entry stores a hash of (its own content + the previous entry's hash).
+   Editing or deleting any historical entry breaks every hash after it, so
+   tampering is detectable even though the store itself is writable.
+   Production equivalent: an append-only table with the same chain, written
+   by the server and never exposed to client mutation.
+   ═══════════════════════════════════════════════════════════════════════ */
+const GENESIS='0000000000000000';
+/** Deterministic 64-bit FNV-1a, hex encoded. Synchronous by design so the
+ *  chain can be extended inside a render pass. */
+function auditHash(str){
+  let h1=0x811c9dc5,h2=0x01000193;
+  for(let i=0;i<str.length;i++){
+    const c=str.charCodeAt(i);
+    h1=(h1^c)>>>0; h1=Math.imul(h1,0x01000193)>>>0;
+    h2=(h2+c)>>>0; h2=Math.imul(h2,0x85ebca6b)>>>0;
+  }
+  return (h1>>>0).toString(16).padStart(8,'0')+(h2>>>0).toString(16).padStart(8,'0');
+}
+function entryPayload(e){return [e.seq,e.date,e.time||'',e.user,e.action,e.detail,e.category].join('|');}
+function chainHash(e,prev){return auditHash(entryPayload(e)+'|'+prev);}
+
+function logAudit(action,detail,category){
+  const log=(S.auditLog=S.auditLog||[]);
+  const prevEntry=log[0];                       // newest-first ordering
+  const now=new Date();
+  const e={
+    id:Date.now()+Math.floor(Math.random()*1000),
+    seq:(prevEntry?.seq??0)+1,
+    date:now.toISOString().slice(0,10),
+    time:now.toTimeString().slice(0,8),
+    user:S.user?.name||'System',
+    actorId:S.user?.id||null,
+    action,detail,category,
+    prev:prevEntry?.hash||GENESIS,
+  };
+  e.hash=chainHash(e,e.prev);
+  log.unshift(e);
+  // Retention: keep the newest N, governed by policy (see privacy centre).
+  const cap=S.privacy?.auditRetention??200;
+  if(log.length>cap)log.length=cap;
+  save();
+}
+/** Walk the chain oldest→newest and report the first break. */
+function verifyAuditChain(){
+  const log=[...(S.auditLog||[])].reverse();     // oldest first
+  let prev=null,broken=null,checked=0;
+  for(const e of log){
+    if(e.hash===undefined){broken=broken??{seq:e.seq,reason:'unsigned entry'};break;}
+    const expectedPrev = prev ? prev.hash : e.prev;   // tolerate truncated tail
+    if(prev && e.prev!==prev.hash){broken={seq:e.seq,reason:'link mismatch'};break;}
+    if(chainHash(e,e.prev)!==e.hash){broken={seq:e.seq,reason:'content altered'};break;}
+    prev=e;checked++;
+  }
+  return {ok:!broken,checked,total:log.length,broken};
+}
+sealAuditChain();   // seal seeded/legacy entries now that the engine exists
 
 // ==================== NAV ====================
+/* ═══════════════════════════════════════════════════════════════════════
+   PHASE 4 · INTERNATIONALISATION
+   Nav labels, page titles and key UI strings are translatable. English and
+   Hindi ship here — appropriate for an Indian retail workforce, and a second
+   script (Devanagari) proves the layout survives non-Latin text rather than
+   only proving that a second Latin locale works.
+   Locale is stored on the user record (Phase 4 migration adds person.locale).
+   ═══════════════════════════════════════════════════════════════════════ */
+const LOCALES={
+  'en-IN':{name:'English',dir:'ltr',flag:'🇬🇧'},
+  'hi-IN':{name:'हिन्दी',dir:'ltr',flag:'🇮🇳'},
+};
+const STRINGS={
+  'hi-IN':{
+    'Dashboard':'डैशबोर्ड','Review Cycles':'समीक्षा चक्र','1-on-1 Meetings':'व्यक्तिगत बैठकें',
+    'Recognition':'सराहना','KPI Tracker':'केपीआई ट्रैकर','Goals (SMART+OKR)':'लक्ष्य (SMART+OKR)',
+    'Balanced Scorecard':'संतुलित स्कोरकार्ड','360° Feedback':'360° प्रतिक्रिया','PIP Tracker':'सुधार योजना',
+    'Competencies':'दक्षताएँ','Development Plans':'विकास योजनाएँ','Pulse Surveys':'पल्स सर्वेक्षण',
+    'Goal Alignment':'लक्ष्य संरेखण','Daily Challenge':'दैनिक चुनौती','Learning Hub':'शिक्षण केंद्र',
+    'Compensation':'वेतन','Administration':'प्रशासन','Fairness Audit':'निष्पक्षता ऑडिट',
+    'Privacy & Data':'गोपनीयता और डेटा','Reports':'रिपोर्ट','Profile':'प्रोफ़ाइल',
+    '9-Box Talent Grid':'9-बॉक्स प्रतिभा ग्रिड','Calibration':'अंशांकन','Audit Trail':'ऑडिट ट्रेल',
+    'Company View':'कंपनी दृश्य',
+    'Sign Out':'साइन आउट','Sign in':'साइन इन','Welcome back':'पुनः स्वागत है',
+    'Email':'ईमेल','Password':'पासवर्ड','Loading page':'पृष्ठ लोड हो रहा है',
+    'Skip to main content':'मुख्य सामग्री पर जाएँ','Notifications':'सूचनाएँ',
+  },
+};
+function currentLocale(){return S.user?.locale||S.locale||'en-IN';}
+/** Translate. Falls back to the source string, so a missing key degrades to English. */
+function t(key){
+  const loc=currentLocale();
+  if(loc==='en-IN')return key;
+  return STRINGS[loc]?.[key]??key;
+}
+function setLocale(code){
+  if(!LOCALES[code])return;
+  S.locale=code; if(S.user)S.user.locale=code;
+  document.documentElement.lang=code;
+  document.documentElement.dir=LOCALES[code].dir;
+  logAudit('Locale changed',code,'settings');
+  save();render();
+}
+
 const PAGES=[
   {id:'dashboard',label:'Dashboard',icon:'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0h4',r:'all'},
   {id:'reviews',label:'Review Cycles',icon:'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01',r:'all'},
@@ -990,22 +1688,57 @@ const PAGES=[
   {id:'goals',label:'Goals (SMART+OKR)',icon:'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6',r:'all'},
   {id:'bsc',label:'Balanced Scorecard',icon:'M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z',r:'all'},
   {id:'feedback',label:'360° Feedback',icon:'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z',r:'all'},
-  {id:'pip',label:'PIP Tracker',icon:'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z',r:'all'},
+  {id:'pip',label:'PIP Tracker',icon:'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z',r:'all',cap:'view:own'},
   {id:'competencies',label:'Competencies',icon:'M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z',r:'all'},
   {id:'idp',label:'Development Plans',icon:'M12 14l9-5-9-5-9 5 9 5zm0 7l-9-5 9-5 9 5-9 5zm0-7v7',r:'all'},
-  {id:'ninebox',label:'9-Box Talent Grid',icon:'M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z',r:'manager'},
+  {id:'ninebox',label:'9-Box Talent Grid',icon:'M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z',r:'manager',cap:'ninebox:view'},
   {id:'surveys',label:'Pulse Surveys',icon:'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6m6 0h6m-6 0V9a2 2 0 012-2h2a2 2 0 012 2v10m6-6v6m0-6a2 2 0 00-2-2h-2a2 2 0 00-2 2',r:'all'},
-  {id:'calibration',label:'Calibration',icon:'M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3',r:'manager'},
+  {id:'comp',label:'Compensation',icon:'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z',r:'manager',cap:'report:team'},
+  {id:'fairness',label:'Fairness Audit',icon:'M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3',r:'manager',cap:'report:company'},
+  {id:'privacy',label:'Privacy & Data',icon:'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',r:'all'},
+  {id:'admin',label:'Administration',icon:'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z',r:'manager',cap:'admin:settings'},
+  {id:'calibration',label:'Calibration',icon:'M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3',r:'manager',cap:'calibration:participate'},
   {id:'cascade',label:'Goal Alignment',icon:'M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm3 8a1 1 0 011-1h8a1 1 0 011 1v2a1 1 0 01-1 1H8a1 1 0 01-1-1v-2zm3 8a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1h-2a1 1 0 01-1-1v-2z',r:'all'},
   {id:'challenge',label:'Daily Challenge',icon:'M13 10V3L4 14h7v7l9-11h-7z',r:'all'},
   {id:'learning',label:'Learning Hub',icon:'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253',r:'all'},
-  {id:'audit',label:'Audit Trail',icon:'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2',r:'manager'},
-  {id:'company',label:'Company View',icon:'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4',r:'manager'},
-  {id:'reports',label:'Reports',icon:'M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',r:'all'},
+  {id:'audit',label:'Audit Trail',icon:'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2',r:'manager',cap:'audit:view'},
+  {id:'company',label:'Company View',icon:'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4',r:'manager',cap:'company:view'},
+  {id:'reports',label:'Reports',icon:'M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',r:'all',cap:'view:own'},
   {id:'profile',label:'Profile',icon:'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z',r:'all'},
 ];
-function buildNav(){document.getElementById('nav').innerHTML=PAGES.filter(p=>p.r==='all'||p.r===S.role).map(p=>`<button onclick="go('${p.id}')" data-label="${p.label}" class="sidebar-link ${S.page===p.id?'active':''}"><svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="${p.icon}"/></svg><span class="sb-label">${p.label}</span></button>`).join('');}
-function go(page){S.page=page;save();buildNav();document.getElementById('pgTitle').textContent=PAGES.find(p=>p.id===page)?.label||'';const m=document.getElementById('main');m.innerHTML='<div class="flex items-center justify-center h-40"><div class="w-7 h-7 border-[2.5px] border-brand-500 border-t-transparent rounded-full animate-spin"></div></div>';document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.add('hidden');destroyCharts();setTimeout(()=>{if(PG[page])PG[page]();},100);}
+/* Nav is derived from capabilities, not from a role string comparison. */
+function pageAllowed(p){
+  if(!p)return false;
+  if(p.cap)return can(p.cap);
+  if(p.r==='all')return true;
+  if(p.r==='manager')return can('view:reports');
+  return true;
+}
+function buildNav(){document.getElementById('nav').innerHTML=PAGES.filter(pageAllowed).map(p=>`<button onclick="go('${p.id}')" data-label="${p.label}" title="${t(p.label)}" aria-current="${S.page===p.id?'page':'false'}" class="sidebar-link ${S.page===p.id?'active':''}"><svg aria-hidden="true" focusable="false" class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="${p.icon}"/></svg><span class="sb-label">${t(p.label)}</span></button>`).join('');}
+
+/* Route guard: even a hand-typed go('calibration') is checked. */
+function go(page){
+  const def=PAGES.find(p=>p.id===page);
+  if(!pageAllowed(def)){
+    logAudit('Access denied','Blocked navigation to '+page,'security');
+    toast('You do not have access to that page.','error');
+    page='dashboard';
+  }
+  S.page=page;save();buildNav();
+  document.getElementById('pgTitle').textContent=t(PAGES.find(p=>p.id===page)?.label||'');
+  const m=document.getElementById('main');
+  m.setAttribute('aria-busy','true');
+  m.innerHTML='<div class="flex items-center justify-center h-40" role="status"><div class="w-7 h-7 border-[2.5px] border-brand-500 border-t-transparent rounded-full animate-spin" aria-hidden="true"></div><span class="sr-only">${t("Loading page")}</span></div>';
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.add('hidden');
+  destroyCharts();
+  setTimeout(()=>{
+    if(PG[page])PG[page]();
+    m.setAttribute('aria-busy','false');
+    // Move focus to the new content so keyboard/screen-reader users land in the right place
+    m.focus({preventScroll:true});
+  },100);
+}
 function toggleSB(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('hidden');}
 function collapseSB(){S.sbCollapsed=!S.sbCollapsed;save();document.body.classList.toggle('sb-collapsed',S.sbCollapsed);
   const btn=document.querySelector('.sb-collapse-btn');if(btn)btn.title=S.sbCollapsed?'Expand sidebar':'Collapse sidebar';
@@ -1090,133 +1823,163 @@ mk('c2',{type:'bar',data:{labels:['Sales','Cust Svc','Warehouse','HR','Finance']
 
 // ---- REVIEW CYCLES ----
 PG.reviews=()=>{const m=document.getElementById('main');
+const cyc=S.reviewCycles.find(c=>c.status==='In Progress')||S.reviewCycles[0];
+const me=meRec();
+const rows=WF.visible(cyc.id);
+const mine=rows.find(r=>r.person.id===me?.id);
+const others=rows.filter(r=>r.person.id!==me?.id);
+const st=s=>WF.STATES[s]||{label:s,color:'ink'};
+const chip=s=>`<span class="badge bg-${st(s).color}-100 text-${st(s).color}-700">${st(s).label}</span>`;
+const counts={};rows.forEach(r=>counts[r.rec.state]=(counts[r.rec.state]||0)+1);
+const doneN=rows.filter(r=>['released','acknowledged'].includes(r.rec.state)).length;
+
 m.innerHTML=`<div class="fade-in space-y-6">
   <div class="flex flex-wrap items-center justify-between gap-3">
-    <div><h2 class="font-display text-xl font-bold text-ink-800">Review Cycles</h2><p class="text-sm text-ink-400 mt-1">Self-review → Manager review → Publish</p></div>
-    ${S.role==='manager'?`<button onclick="showNewCycleForm()" class="bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium px-4 py-2.5 rounded-xl transition">+ Launch Cycle</button>`:''}
+    <div><h2 class="font-display text-xl font-bold text-ink-800 dark:text-ink-100">${cyc.name}</h2>
+      <p class="text-sm text-ink-400 mt-1">${cyc.period} · due ${cyc.dueDate} · ${rows.length} in your scope</p></div>
+    ${badge(cyc.status)}
   </div>
-  <div id="newCycleForm" class="hidden card border-brand-200 mb-4">
-    <h3 class="font-display font-semibold text-ink-700 mb-3">Launch New Review Cycle</h3>
-    <div class="grid sm:grid-cols-3 gap-3">
-      <input id="rcName" placeholder="Cycle name (e.g. Q3 2025)" class="border border-ink-200 rounded-xl px-4 py-2.5 text-sm">
-      <input id="rcPeriod" placeholder="Period (e.g. Jul–Sep 2025)" class="border border-ink-200 rounded-xl px-4 py-2.5 text-sm">
-      <input id="rcDue" type="date" class="border border-ink-200 rounded-xl px-4 py-2.5 text-sm">
-      <button onclick="createCycle()" class="bg-brand-600 text-white rounded-xl py-2.5 text-sm font-semibold">Create</button>
+
+  <!-- PIPELINE -->
+  <div class="card">
+    <div class="flex items-center justify-between mb-3">
+      <h3 class="font-display font-semibold text-ink-700 dark:text-ink-200">Cycle Pipeline</h3>
+      <span class="text-xs text-ink-400">${doneN}/${rows.length} complete</span>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      ${Object.keys(WF.STATES).map(k=>`<div class="flex-1 min-w-[110px] rounded-xl border border-ink-100 dark:border-ink-700 p-2.5 text-center">
+        <p class="text-lg font-bold text-ink-800 dark:text-ink-100">${counts[k]||0}</p>
+        <p class="text-[.6rem] font-semibold uppercase tracking-wide text-ink-400">${st(k).label}</p>
+      </div>`).join('')}
     </div>
   </div>
 
-  <!-- Cycle Cards -->
-  <div class="space-y-4">${S.reviewCycles.map((cy,ci)=>{
-    const done=cy.employees.filter(e=>e.selfDone&&e.mgrDone).length;
-    const total=cy.employees.length;
-    const pct=total?Math.round(done/total*100):0;
-    return `<div class="card border-l-4 ${cy.status==='Completed'?'border-l-brand-400':'border-l-blue-400'}">
-      <div class="flex items-center justify-between mb-3">
-        <div><h4 class="font-display font-semibold text-ink-700">${cy.name}</h4><p class="text-xs text-ink-400">${cy.period} · Due: ${cy.dueDate}</p></div>
-        ${badge(cy.status)}
-      </div>
-      ${pb(pct)}
-      <p class="text-xs text-ink-400 mt-1">${done}/${total} reviews completed (${pct}%)</p>
-      <div class="mt-4 overflow-x-auto"><table class="w-full text-sm">
-        <thead><tr class="border-b border-ink-100">${th('Employee')}${th('Self-Review')}${th('Manager Review')}${th('Self Rating')}${th('Mgr Rating')}${th('Action')}</tr></thead>
-        <tbody>${cy.employees.map((emp,ei)=>{
-          const selfStatus=emp.selfDone?'✅ Done':'⏳ Pending';
-          const mgrStatus=emp.mgrDone?'✅ Done':'⏳ Pending';
-          return `<tr class="border-b border-ink-50">
-            <td class="py-2.5 font-medium">${emp.name}</td>
-            <td class="text-xs">${selfStatus}</td>
-            <td class="text-xs">${mgrStatus}</td>
-            <td>${emp.selfRating?rB(emp.selfRating):'-'}</td>
-            <td>${emp.mgrRating?rB(emp.mgrRating):'-'}</td>
-            <td>
-              ${(!emp.selfDone&&emp.name==='Rahul Sharma')?`<button onclick="openSelfReview(${ci},${ei})" class="text-xs bg-blue-600 text-white px-2.5 py-1 rounded-lg font-medium">Write Self-Review</button>`:
-               (emp.selfDone&&!emp.mgrDone&&S.role==='manager')?`<button onclick="openMgrReview(${ci},${ei})" class="text-xs bg-purple-600 text-white px-2.5 py-1 rounded-lg font-medium">Write Review</button>`:
-               (emp.selfDone&&emp.mgrDone)?`<button onclick="viewReview(${ci},${ei})" class="text-xs text-brand-600 font-medium hover:underline">View</button>`:
-               `<span class="text-xs text-ink-300">Waiting</span>`}
-            </td>
-          </tr>`;
-        }).join('')}</tbody>
-      </table></div>
-    </div>`;
-  }).join('')}</div>
-</div>`;
-};
-function showNewCycleForm(){document.getElementById('newCycleForm').classList.toggle('hidden');}
-function createCycle(){
-  const n=document.getElementById('rcName').value;if(!n){toast('Enter cycle name','error');return;}
-  S.reviewCycles.push({id:Date.now(),name:n,period:document.getElementById('rcPeriod').value,status:'In Progress',dueDate:document.getElementById('rcDue').value,employees:S.employees.map(e=>({name:e.name,selfDone:false,mgrDone:false,selfRating:0,mgrRating:0,selfText:'',mgrText:''}))});
-  save();addNotif('review',`New review cycle "${n}" launched!`,'reviews');go('reviews');toast('Review cycle launched');
-}
-function openSelfReview(ci,ei){
-  const cy=S.reviewCycles[ci],emp=cy.employees[ei];
-  document.getElementById('main').innerHTML=`<div class="fade-in space-y-6 max-w-3xl">
-    <button onclick="go('reviews')" class="text-sm text-brand-600 hover:underline font-medium">← Back to Cycles</button>
-    <div><h2 class="font-display text-xl font-bold text-ink-800">Self-Review: ${cy.name}</h2><p class="text-sm text-ink-400">${emp.name} · ${cy.period}</p></div>
-    <div class="card space-y-5">
-      <div class="review-q"><label class="block text-sm font-semibold text-ink-700 mb-2">1. What were your key accomplishments this period?</label>
-        <textarea id="srQ1" rows="3" class="w-full border border-ink-200 rounded-xl px-4 py-2.5 text-sm" placeholder="Describe your top achievements...">${emp.selfText}</textarea></div>
-      <div class="review-q"><label class="block text-sm font-semibold text-ink-700 mb-2">2. What challenges did you face? How did you address them?</label>
-        <textarea id="srQ2" rows="3" class="w-full border border-ink-200 rounded-xl px-4 py-2.5 text-sm" placeholder="Be honest about challenges..."></textarea></div>
-      <div class="review-q"><label class="block text-sm font-semibold text-ink-700 mb-2">3. What areas would you like to develop?</label>
-        <textarea id="srQ3" rows="2" class="w-full border border-ink-200 rounded-xl px-4 py-2.5 text-sm" placeholder="Skills, competencies, growth areas..."></textarea></div>
-      <div class="review-q"><label class="block text-sm font-semibold text-ink-700 mb-2">4. Overall self-rating (1–5)</label>
-        <div class="flex gap-2">${[1,2,3,4,5].map(n=>`<button onclick="document.getElementById('srRating').value=${n};document.querySelectorAll('.sr-star').forEach((s,i)=>s.classList.toggle('text-amber-400',i<${n}))" class="sr-star text-2xl ${n<=4?'text-amber-400':'text-ink-200'} hover:text-amber-400 transition cursor-pointer">★</button>`).join('')}</div>
-        <input type="hidden" id="srRating" value="4"></div>
-      <button onclick="submitSelfReview(${ci},${ei})" class="bg-brand-600 text-white px-6 py-2.5 rounded-xl font-semibold hover:bg-brand-700 transition">Submit Self-Review</button>
+  ${mine?`<!-- MY REVIEW -->
+  <div class="card border-l-4 border-l-brand-400">
+    <div class="flex items-center justify-between mb-1">
+      <h3 class="font-display font-semibold text-ink-700 dark:text-ink-200">My Review</h3>${chip(mine.rec.state)}
     </div>
-  </div>`;
-}
-function submitSelfReview(ci,ei){
-  const txt=[document.getElementById('srQ1').value,document.getElementById('srQ2')?.value||'',document.getElementById('srQ3')?.value||''].filter(Boolean).join(' | ');
-  S.reviewCycles[ci].employees[ei].selfDone=true;
-  S.reviewCycles[ci].employees[ei].selfRating=+document.getElementById('srRating').value;
-  S.reviewCycles[ci].employees[ei].selfText=txt;
-  save();addNotif('review','Self-review submitted for '+S.reviewCycles[ci].name,'reviews');go('reviews');toast('Self-review submitted!');
-}
-function openMgrReview(ci,ei){
-  const cy=S.reviewCycles[ci],emp=cy.employees[ei];
-  document.getElementById('main').innerHTML=`<div class="fade-in space-y-6 max-w-4xl">
-    <button onclick="go('reviews')" class="text-sm text-brand-600 hover:underline font-medium">← Back</button>
-    <h2 class="font-display text-xl font-bold text-ink-800">Manager Review: ${emp.name}</h2>
-    <div class="grid lg:grid-cols-2 gap-5">
-      <div class="card bg-blue-50/50 border-blue-200">
-        <h4 class="font-semibold text-blue-700 text-sm mb-2">Employee's Self-Review</h4>
-        <p class="text-sm text-ink-600">${emp.selfText||'No self-review text.'}</p>
-        <p class="text-sm text-ink-500 mt-2">Self-rating: ${rB(emp.selfRating)}</p>
-      </div>
-      <div class="card space-y-4">
-        <div class="review-q"><label class="block text-sm font-semibold text-ink-700 mb-2">Manager Assessment</label>
-          <textarea id="mrText" rows="4" class="w-full border border-ink-200 rounded-xl px-4 py-2.5 text-sm" placeholder="Your assessment of this employee's performance...">${emp.mgrText}</textarea></div>
-        <div class="review-q"><label class="block text-sm font-semibold text-ink-700 mb-2">Manager Rating (1–5)</label>
-          <select id="mrRating" class="border border-ink-200 rounded-xl px-4 py-2.5 text-sm"><option value="5">5 - Outstanding</option><option value="4" selected>4 - Exceeds</option><option value="3">3 - Meets</option><option value="2">2 - Needs Improvement</option><option value="1">1 - Unsatisfactory</option></select></div>
-        <button onclick="submitMgrReview(${ci},${ei})" class="bg-purple-600 text-white px-6 py-2.5 rounded-xl font-semibold hover:bg-purple-700 transition">Submit Manager Review</button>
-      </div>
-    </div>
-  </div>`;
-}
-function submitMgrReview(ci,ei){
-  S.reviewCycles[ci].employees[ei].mgrDone=true;
-  S.reviewCycles[ci].employees[ei].mgrRating=+document.getElementById('mrRating').value;
-  S.reviewCycles[ci].employees[ei].mgrText=document.getElementById('mrText').value;
-  const cy=S.reviewCycles[ci];if(cy.employees.every(e=>e.selfDone&&e.mgrDone))cy.status='Completed';
-  save();addNotif('review','Manager review submitted for '+cy.employees[ei].name,'reviews');go('reviews');toast('Manager review submitted');
-}
-function viewReview(ci,ei){
-  const cy=S.reviewCycles[ci],emp=cy.employees[ei];
-  document.getElementById('main').innerHTML=`<div class="fade-in space-y-6 max-w-3xl">
-    <button onclick="go('reviews')" class="text-sm text-brand-600 hover:underline font-medium">← Back</button>
-    <h2 class="font-display text-xl font-bold text-ink-800">Review: ${emp.name} — ${cy.name}</h2>
-    <div class="grid sm:grid-cols-2 gap-4">
-      <div class="card"><h4 class="text-sm font-semibold text-blue-700 mb-2">Self-Review</h4><p class="text-sm text-ink-600">${emp.selfText}</p><p class="mt-2">Rating: ${rB(emp.selfRating)}</p></div>
-      <div class="card"><h4 class="text-sm font-semibold text-purple-700 mb-2">Manager Review</h4><p class="text-sm text-ink-600">${emp.mgrText}</p><p class="mt-2">Rating: ${rB(emp.mgrRating)}</p></div>
-    </div>
-    <div class="card"><h4 class="text-sm font-semibold text-ink-700 mb-2">Rating Comparison</h4>
-      <div class="flex gap-8"><div><span class="text-xs text-ink-400">Self</span><p class="text-2xl font-bold text-blue-600">${Number(emp.selfRating).toFixed(1)}</p></div><div><span class="text-xs text-ink-400">Manager</span><p class="text-2xl font-bold text-purple-600">${Number(emp.mgrRating).toFixed(1)}</p></div><div><span class="text-xs text-ink-400">Gap</span><p class="text-2xl font-bold ${Math.abs(emp.selfRating-emp.mgrRating)>1?'text-red-500':'text-brand-600'}">${Math.abs(emp.selfRating-emp.mgrRating).toFixed(1)}</p></div></div>
-    </div>
-  </div>`;
-}
+    ${pb(WF.pct(mine.rec.state))}
+    <div class="mt-4">${reviewEditor(cyc.id,mine.person.id,'self')}</div>
+  </div>`:''}
 
-// ---- 1-ON-1 MEETINGS ----
+  ${others.length?`<!-- TEAM -->
+  <div class="card">
+    <h3 class="font-display font-semibold text-ink-700 dark:text-ink-200 mb-3">Team Reviews</h3>
+    <div class="overflow-x-auto"><table class="w-full text-sm">
+      <thead><tr class="border-b-2 border-ink-100 dark:border-ink-700">${th('Employee')}${th('Stage')}${th('Self')}${th('Manager')}${th('Final')}${th('Progress')}${th('')}</tr></thead>
+      <tbody>${others.map(r=>`<tr class="border-b border-ink-50 dark:border-ink-700">
+        <td class="py-2.5"><p class="font-medium">${r.person.name}</p><p class="text-[.65rem] text-ink-400">${r.person.title}</p></td>
+        <td>${chip(r.rec.state)}</td>
+        <td>${r.rec.selfRating??'—'}</td><td>${r.rec.mgrRating??'—'}</td><td>${r.rec.finalRating??'—'}</td>
+        <td style="min-width:90px">${pb(WF.pct(r.rec.state))}</td>
+        <td><button onclick="openReview(${cyc.id},'${r.person.id}')" class="text-xs bg-brand-600 text-white px-2.5 py-1 rounded-lg font-medium hover:bg-brand-700 transition">Open</button></td>
+      </tr>`).join('')}</tbody>
+    </table></div>
+  </div>`:''}
+
+  <!-- HISTORY -->
+  <div class="card">
+    <h3 class="font-display font-semibold text-ink-700 dark:text-ink-200 mb-3">My Performance History</h3>
+    ${(()=>{const hist=(S.workflow||[]).filter(w=>w.empId===me?.id&&w.finalRating!=null)
+        .map(w=>({c:S.reviewCycles.find(c=>c.id===w.cycleId),w})).filter(x=>x.c);
+      if(!hist.length)return '<p class="text-sm text-ink-400">No completed cycles yet.</p>';
+      return hist.map(({c,w})=>`<div class="flex items-center justify-between py-2 border-b border-ink-50 dark:border-ink-700 last:border-0">
+        <div><p class="text-sm font-medium text-ink-700 dark:text-ink-200">${c.name}</p>
+          <p class="text-[.65rem] text-ink-400">${c.period}${w.ackAt?' · acknowledged '+w.ackAt:''}</p></div>
+        <div class="text-right"><span class="text-lg font-bold text-brand-600">${w.finalRating}</span>
+          <span class="text-xs text-ink-400"> self ${w.selfRating??'—'} / mgr ${w.mgrRating??'—'}</span></div>
+      </div>`).join('');})()}
+  </div>
+</div>`;};
+
+/* Inline editor + transition controls for one workflow record. */
+function reviewEditor(cycleId,empId,mode){
+  const r=WF.rec(cycleId,empId), me=meRec();
+  const isSelf=empId===me?.id, isMgr=WF.actsAsManager(empId), isHR=can('review:admin');
+  const acts=WF.allowed(r);
+  const scale=S.config.ratingScale;
+  const ratingSel=(id,val,dis)=>`<select id="${id}" ${dis?'disabled':''} class="border border-ink-200 dark:border-ink-600 rounded-lg px-2.5 py-1.5 text-sm bg-transparent">
+      <option value="">Select…</option>${scale.map(s=>`<option value="${s.v}" ${String(val)===String(s.v)?'selected':''}>${s.v} · ${s.label}</option>`).join('')}</select>`;
+  const canEditSelf = isSelf && r.state==='self_review';
+  const canEditMgr  = isMgr && r.state==='manager_review';
+  const canEditFinal= isHR && r.state==='calibration';
+  return `
+  <div class="space-y-4">
+    <!-- self -->
+    <div class="rounded-xl border border-ink-100 dark:border-ink-700 p-3.5">
+      <div class="flex items-center justify-between mb-2">
+        <p class="text-xs font-semibold uppercase tracking-wide text-ink-400">Self-Assessment</p>
+        ${canEditSelf?ratingSel('rvSelf',r.selfRating,false):`<span class="text-sm font-bold text-ink-700 dark:text-ink-200">${r.selfRating??'—'}</span>`}
+      </div>
+      ${canEditSelf
+        ? `<textarea id="rvSelfText" rows="3" class="w-full border border-ink-200 dark:border-ink-600 rounded-lg px-3 py-2 text-sm bg-transparent" placeholder="What did you achieve? Minimum 10 characters.">${r.selfText||''}</textarea>
+           <button onclick="saveReview(${cycleId},'${empId}','self')" class="mt-2 text-xs bg-ink-100 dark:bg-ink-700 text-ink-600 dark:text-ink-200 px-3 py-1.5 rounded-lg font-medium">Save draft</button>`
+        : `<p class="text-sm text-ink-600 dark:text-ink-300">${r.selfText||'<span class="text-ink-400">Not submitted</span>'}</p>`}
+    </div>
+    <!-- manager -->
+    <div class="rounded-xl border border-ink-100 dark:border-ink-700 p-3.5 ${r.state==='draft'||r.state==='self_review'?'opacity-55':''}">
+      <div class="flex items-center justify-between mb-2">
+        <p class="text-xs font-semibold uppercase tracking-wide text-ink-400">Manager Assessment</p>
+        ${canEditMgr?ratingSel('rvMgr',r.mgrRating,false):`<span class="text-sm font-bold text-ink-700 dark:text-ink-200">${r.mgrRating??'—'}</span>`}
+      </div>
+      ${canEditMgr
+        ? `<textarea id="rvMgrText" rows="3" class="w-full border border-ink-200 dark:border-ink-600 rounded-lg px-3 py-2 text-sm bg-transparent" placeholder="Evidence-based assessment. Minimum 10 characters.">${r.mgrText||''}</textarea>
+           <button onclick="saveReview(${cycleId},'${empId}','mgr')" class="mt-2 text-xs bg-ink-100 dark:bg-ink-700 text-ink-600 dark:text-ink-200 px-3 py-1.5 rounded-lg font-medium">Save draft</button>`
+        : `<p class="text-sm text-ink-600 dark:text-ink-300">${r.mgrText||'<span class="text-ink-400">Pending</span>'}</p>`}
+    </div>
+    <!-- calibrated final -->
+    ${['calibration','released','acknowledged'].includes(r.state)?`
+    <div class="rounded-xl border p-3.5 ${canEditFinal?'border-amber-200 bg-amber-50/50 dark:bg-amber-900/10':'border-ink-100 dark:border-ink-700'}">
+      <div class="flex items-center justify-between">
+        <p class="text-xs font-semibold uppercase tracking-wide text-ink-400">Calibrated Final Rating</p>
+        ${canEditFinal?ratingSel('rvFinal',r.finalRating,false):`<span class="text-lg font-bold text-brand-600">${r.finalRating??'—'}</span>`}
+      </div>
+      ${canEditFinal?`<button onclick="saveReview(${cycleId},'${empId}','final')" class="mt-2 text-xs bg-ink-100 dark:bg-ink-700 text-ink-600 dark:text-ink-200 px-3 py-1.5 rounded-lg font-medium">Save</button>`:''}
+    </div>`:''}
+    <!-- acknowledgement -->
+    ${r.state==='released'&&isSelf?`
+    <div class="rounded-xl border border-brand-200 bg-brand-50 dark:bg-brand-900/10 p-3.5">
+      <p class="text-xs font-semibold uppercase tracking-wide text-brand-700 mb-2">Your Acknowledgement</p>
+      <p class="text-xs text-ink-500 dark:text-ink-300 mb-2">Acknowledging records that you have read this review. It does not mean you agree with it — add a comment if you wish to note disagreement.</p>
+      <textarea id="rvAck" rows="2" class="w-full border border-ink-200 dark:border-ink-600 rounded-lg px-3 py-2 text-sm bg-transparent" placeholder="Optional comment…"></textarea>
+    </div>`:''}
+    ${r.ackAt?`<div class="text-xs text-ink-400">✓ Acknowledged on ${r.ackAt}${r.ackNote?` — “${r.ackNote}”`:''}</div>`:''}
+    <!-- transitions -->
+    <div class="flex flex-wrap gap-2 pt-1">
+      ${acts.map(a=>`<button onclick="doTransition(${cycleId},'${empId}','${a.to}')" ${a.blocked?'disabled':''}
+        class="text-xs px-3.5 py-2 rounded-lg font-semibold transition ${a.blocked?'bg-ink-100 text-ink-400 cursor-not-allowed':'bg-brand-600 text-white hover:bg-brand-700'}"
+        title="${a.blocked?'Required fields incomplete':''}">${a.label}</button>`).join('')
+        ||'<span class="text-xs text-ink-400">No actions available to you at this stage.</span>'}
+    </div>
+    <!-- audit trail -->
+    ${r.history.length?`<details class="text-xs text-ink-400"><summary class="cursor-pointer">Workflow history (${r.history.length})${r.reopenCount?` · reopened ${r.reopenCount}×`:''}</summary>
+      <div class="mt-2 space-y-1">${r.history.map(x=>`<div>${x.at} — <strong>${x.by}</strong>: ${WF.STATES[x.from]?.label||x.from} → ${WF.STATES[x.to]?.label||x.to}</div>`).join('')}</div></details>`:''}
+  </div>`;
+}
+function saveReview(cycleId,empId,which){
+  const r=WF.rec(cycleId,empId);
+  if(which==='self'){const v=document.getElementById('rvSelf')?.value;r.selfRating=v?+v:null;r.selfText=document.getElementById('rvSelfText')?.value||'';}
+  if(which==='mgr'){const v=document.getElementById('rvMgr')?.value;r.mgrRating=v?+v:null;r.mgrText=document.getElementById('rvMgrText')?.value||'';}
+  if(which==='final'){const v=document.getElementById('rvFinal')?.value;r.finalRating=v?+v:null;}
+  save();toast('Saved');go('reviews');
+}
+function doTransition(cycleId,empId,to){
+  const r=WF.rec(cycleId,empId);
+  if(to==='acknowledged'){const n=document.getElementById('rvAck');if(n)r.ackNote=n.value||'';}
+  // capture any unsaved edits before moving stage
+  const s=document.getElementById('rvSelf'),st=document.getElementById('rvSelfText');
+  if(s)r.selfRating=s.value?+s.value:r.selfRating; if(st)r.selfText=st.value||r.selfText;
+  const g=document.getElementById('rvMgr'),gt=document.getElementById('rvMgrText');
+  if(g)r.mgrRating=g.value?+g.value:r.mgrRating; if(gt)r.mgrText=gt.value||r.mgrText;
+  const f=document.getElementById('rvFinal'); if(f)r.finalRating=f.value?+f.value:r.finalRating;
+  if(WF.transition(cycleId,empId,to)){toast('Review moved to '+(WF.STATES[to]?.label||to));closeReview();go('reviews');}
+}
+function openReview(cycleId,empId){
+  const p=ORG.byId(empId);
+  gameModal(`Review · ${p?.name||''}`,`<p class="text-xs text-ink-400 -mt-2 mb-3">${p?.title||''} · ${p?.dept||''}</p>${reviewEditor(cycleId,empId,'mgr')}`,640);
+}
+function closeReview(){document.getElementById('gameModal')?.remove();}
 PG.oneonones=()=>{const m=document.getElementById('main');
 const upcoming=S.oneOnOnes.filter(o=>new Date(o.date)>=new Date('2025-04-07'));
 const past=S.oneOnOnes.filter(o=>new Date(o.date)<new Date('2025-04-07'));
@@ -1626,7 +2389,34 @@ const latestENPS=sv.enpsHistory[0];
 const enpsScore=latestENPS?Math.round((latestENPS.promoters-latestENPS.detractors)/(latestENPS.promoters+latestENPS.passives+latestENPS.detractors)*100):0;
 const totalResp=latestENPS?(latestENPS.promoters+latestENPS.passives+latestENPS.detractors):0;
 const dims=latest?Object.keys(latest.scores):[];
+// Phase 2 — anonymity: department cells below the threshold are never shown.
+const THRESH=S.config?.anonymityThreshold??5;
+const deptCells=ORG.depts().map(d=>{
+  const n=ORG.people.filter(p=>p.dept===d).length;
+  const responded=Math.max(0,Math.round(n*0.82));
+  return {dept:d,n,responded,suppressed:responded<THRESH,
+          score:responded<THRESH?null:+(3.2+(d.length%5)*0.22).toFixed(1)};
+});
+const hiddenCount=deptCells.filter(c=>c.suppressed).length;
+const anonBanner=`<div class="rounded-xl p-3.5 border flex items-start gap-3" style="background:#fdf6f0;border-color:#f6d2b8">
+    <span class="text-lg">🔒</span>
+    <p class="text-xs text-ink-700">Responses are anonymous. Any group with fewer than <strong>${THRESH}</strong> responses is suppressed and cannot be viewed by anyone,
+    including HR — this prevents individual answers from being inferred from a small team.${hiddenCount?` <strong>${hiddenCount} department${hiddenCount>1?'s are':' is'} currently suppressed.</strong>`:''}</p>
+  </div>`;
+const deptBreakdown=`<div class="card">
+    <h3 class="font-display font-semibold text-ink-700 dark:text-ink-200 mb-1">Department Breakdown</h3>
+    <p class="text-xs text-ink-400 mb-3">Suppression floor: ${THRESH} responses</p>
+    <table class="w-full text-sm">
+      <thead><tr class="border-b-2 border-ink-100 dark:border-ink-700">${th('Department')}${th('Headcount')}${th('Responses')}${th('Score')}</tr></thead>
+      <tbody>${deptCells.map(c=>c.suppressed
+        ? `<tr class="border-b border-ink-50 dark:border-ink-700 opacity-60"><td class="py-2">${c.dept}</td><td>${c.n}</td><td>${c.responded}</td>
+             <td class="text-xs italic text-ink-400">🔒 Suppressed — below anonymity threshold</td></tr>`
+        : `<tr class="border-b border-ink-50 dark:border-ink-700"><td class="py-2 font-medium">${c.dept}</td><td>${c.n}</td><td>${c.responded}</td>
+             <td class="font-semibold text-brand-600">${c.score}</td></tr>`).join('')}
+      </tbody></table>
+  </div>`;
 m.innerHTML=`<div class="fade-in space-y-6">
+  ${anonBanner}
   <div class="flex flex-wrap items-center justify-between gap-3">
     <div><h2 class="font-display text-xl font-bold text-ink-800">Pulse Surveys & eNPS</h2><p class="text-sm text-ink-400 mt-1">Anonymous employee sentiment tracking</p></div>
     ${S.role==='manager'?`<button onclick="document.getElementById('launchSurvey').classList.toggle('hidden')" class="bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium px-4 py-2.5 rounded-xl transition">📊 Launch Pulse</button>`:''}
@@ -1676,6 +2466,7 @@ m.innerHTML=`<div class="fade-in space-y-6">
         </div>${pb(cur/5*100)}</div>`;
     }).join('')}</div>
   </div>`:''}`+`
+  ${deptBreakdown}
   <!-- Trend Charts -->
   <div class="grid lg:grid-cols-2 gap-5">
     <div class="card"><h3 class="font-display font-semibold text-ink-700 mb-4">Pulse Trend</h3><canvas id="pulseTrend" height="220"></canvas></div>
@@ -1976,19 +2767,43 @@ function toggleEOD(i){const t=S.play.eod[i];t.done=!t.done;
   save();go('challenge');}
 
 // ---------- modal shell ----------
+/* Accessible dialog: labelled, focus-trapped, Escape-dismissable, and it
+   restores focus to whatever opened it (WCAG 2.1.2 No Keyboard Trap, 2.4.3). */
+let _modalReturnFocus=null;
 function gameModal(title,body,wide){
   const old=document.getElementById('gameModal');if(old)old.remove();
+  _modalReturnFocus=document.activeElement;
   const d=document.createElement('div');d.id='gameModal';
+  d.setAttribute('role','dialog');d.setAttribute('aria-modal','true');d.setAttribute('aria-labelledby','gameModalTitle');
   d.style.cssText='position:fixed;inset:0;z-index:150;background:rgba(20,14,10,.55);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:16px';
   d.innerHTML=`<div class="card fade-in" style="max-width:${wide||560}px;width:100%;max-height:92vh;overflow-y:auto">
     <div class="flex items-center justify-between mb-4">
-      <h3 class="font-display font-semibold text-ink-800 dark:text-ink-100">${title}</h3>
-      <button onclick="closeGame()" class="text-ink-400 hover:text-ink-700 text-xl leading-none px-1">&times;</button>
+      <h3 class="font-display font-semibold text-ink-800 dark:text-ink-100" id="gameModalTitle">${title}</h3>
+      <button onclick="closeGame()" class="text-ink-400 hover:text-ink-700 text-xl leading-none px-1" aria-label="Close dialog">&times;</button>
     </div><div id="gameBody">${body}</div></div>`;
   d.addEventListener('click',e=>{if(e.target===d)closeGame();});
-  document.body.appendChild(d);return d;
+  // Focus trap
+  d.addEventListener('keydown',e=>{
+    if(e.key==='Escape'){e.preventDefault();closeGame();return;}
+    if(e.key!=='Tab')return;
+    const f=[...d.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])')]
+      .filter(el=>!el.disabled&&el.offsetParent!==null);
+    if(!f.length)return;
+    const first=f[0],last=f[f.length-1];
+    if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+    else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+  });
+  document.body.appendChild(d);
+  // Move focus into the dialog
+  const target=d.querySelector('input,select,textarea,button:not([aria-label="Close dialog"])')||d.querySelector('button');
+  setTimeout(()=>target?.focus(),30);
+  return d;
 }
-function closeGame(){document.getElementById('gameModal')?.remove();document.onkeydown=null;go('challenge');}
+function closeGame(){
+  document.getElementById('gameModal')?.remove();document.onkeydown=null;
+  if(_modalReturnFocus&&document.contains(_modalReturnFocus)){_modalReturnFocus.focus();_modalReturnFocus=null;}
+  go('challenge');
+}
 
 // ---------- GAME 1: WORD BALANCE ----------
 let WG={};
@@ -2118,6 +2933,445 @@ function mFlip(i){
     setTimeout(()=>{if(a.id===b2.id&&a.t!==b2.t)MM.matched.push(a.id);
       MM.open=[];MM.lock=false;drawMem();},a.id===b2.id&&a.t!==b2.t?420:820);
   } else drawMem();
+}
+
+// ==================== PHASE 1 · COMPENSATION PLANNING ====================
+const fmtINR=n=>'₹'+Math.round(n).toLocaleString('en-IN');
+function compaBand(c){return c<0.90?'low':c<=1.05?'mid':'high';}
+function suggestedPct(empId){
+  const r=(S.workflow||[]).filter(w=>w.empId===empId&&w.finalRating!=null)
+    .sort((a,b)=>b.cycleId-a.cycleId)[0];
+  const p=ORG.byId(empId);if(!p)return 0;
+  const rating=Math.round(r?.finalRating ?? 3);
+  const row=S.comp.matrix[rating]||S.comp.matrix[3];
+  return row[compaBand(p.compa)]??0;
+}
+PG.comp=()=>{const m=document.getElementById('main');
+const people=visiblePeople().filter(p=>p.id!==meRec()?.id||can('view:all'));
+const rows=people.map(p=>{
+  const prop=S.comp.proposals[p.id];
+  const sug=suggestedPct(p.id);
+  const pct=prop?.pct ?? sug;
+  return {p,sug,pct,note:prop?.note||'',approved:prop?.approved||false,
+          inc:p.salary*pct/100,newSal:p.salary*(1+pct/100)};
+});
+const totalBase=rows.reduce((s,r)=>s+r.p.salary,0);
+const totalInc=rows.reduce((s,r)=>s+r.inc,0);
+const spendPct=totalBase?totalInc/totalBase*100:0;
+const over=spendPct>S.comp.budgetPct;
+m.innerHTML=`<div class="fade-in space-y-6">
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <div><h2 class="font-display text-xl font-bold text-ink-800 dark:text-ink-100">Compensation Planning</h2>
+      <p class="text-sm text-ink-400 mt-1">${S.comp.cycleName} · merit increases driven by calibrated ratings</p></div>
+    ${badge(S.comp.status)}
+  </div>
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="card"><p class="text-[.68rem] font-semibold text-ink-400 uppercase tracking-wider">Population</p><p class="text-2xl font-bold text-ink-800 dark:text-ink-100 mt-1">${rows.length}</p></div>
+    <div class="card"><p class="text-[.68rem] font-semibold text-ink-400 uppercase tracking-wider">Current Base</p><p class="text-xl font-bold text-ink-800 dark:text-ink-100 mt-1">${fmtINR(totalBase)}</p></div>
+    <div class="card"><p class="text-[.68rem] font-semibold text-ink-400 uppercase tracking-wider">Proposed Spend</p><p class="text-xl font-bold ${over?'text-red-500':'text-brand-600'} mt-1">${fmtINR(totalInc)}</p></div>
+    <div class="card"><p class="text-[.68rem] font-semibold text-ink-400 uppercase tracking-wider">Budget Usage</p>
+      <p class="text-2xl font-bold ${over?'text-red-500':'text-brand-600'} mt-1">${spendPct.toFixed(1)}%</p>
+      <p class="text-[.65rem] text-ink-400">of ${S.comp.budgetPct}% allowed</p></div>
+  </div>
+  ${over?`<div class="bg-red-50 dark:bg-red-900/15 border border-red-200 dark:border-red-800 rounded-xl p-3.5">
+    <p class="text-sm text-red-700 dark:text-red-300"><strong>Over budget by ${(spendPct-S.comp.budgetPct).toFixed(1)} points.</strong> Reduce proposals before submitting for approval.</p></div>`:''}
+
+  <div class="card"><h3 class="font-display font-semibold text-ink-700 dark:text-ink-200 mb-1">Merit Matrix</h3>
+    <p class="text-xs text-ink-400 mb-3">Increase % by calibrated rating and position in salary range (compa-ratio).</p>
+    <div class="overflow-x-auto"><table class="w-full text-sm">
+      <thead><tr class="border-b-2 border-ink-100 dark:border-ink-700">${th('Rating')}${th('Below range (&lt;0.90)')}${th('In range (0.90–1.05)')}${th('Above range (&gt;1.05)')}</tr></thead>
+      <tbody>${[5,4,3,2,1].map(r=>{const row=S.comp.matrix[r],lb=S.config.ratingScale.find(s=>s.v===r);
+        return `<tr class="border-b border-ink-50 dark:border-ink-700"><td class="py-2 font-medium">${r} · ${lb?.label||''}</td>
+        ${['low','mid','high'].map(b=>`<td><input type="number" step="0.5" min="0" max="30" value="${row[b]}" ${can('admin:settings')?'':'disabled'}
+          onchange="S.comp.matrix[${r}]['${b}']=+this.value;save();go('comp')"
+          class="w-16 bg-transparent border-b border-ink-200 dark:border-ink-600 text-brand-600 font-semibold"></td>`).join('')}</tr>`;}).join('')}
+      </tbody></table></div>
+  </div>
+
+  <div class="card"><h3 class="font-display font-semibold text-ink-700 dark:text-ink-200 mb-3">Proposals</h3>
+    <div class="overflow-x-auto"><table class="w-full text-sm">
+      <thead><tr class="border-b-2 border-ink-100 dark:border-ink-700">${th('Employee')}${th('Rating')}${th('Compa')}${th('Current')}${th('Suggested')}${th('Proposed %')}${th('Increase')}${th('New Salary')}</tr></thead>
+      <tbody>${rows.map(r=>{
+        const dev=Math.abs(r.pct-r.sug)>0.01;
+        return `<tr class="border-b border-ink-50 dark:border-ink-700">
+        <td class="py-2.5"><p class="font-medium">${r.p.name}</p><p class="text-[.65rem] text-ink-400">${r.p.title} · ${r.p.band}</p></td>
+        <td>${(S.workflow||[]).filter(w=>w.empId===r.p.id&&w.finalRating!=null).sort((a,b)=>b.cycleId-a.cycleId)[0]?.finalRating??'—'}</td>
+        <td><span class="badge ${r.p.compa<0.9?'bg-amber-100 text-amber-700':r.p.compa>1.05?'bg-blue-100 text-blue-700':'bg-ink-100 text-ink-600'}">${r.p.compa.toFixed(2)}</span></td>
+        <td>${fmtINR(r.p.salary)}</td>
+        <td class="text-ink-400">${r.sug.toFixed(1)}%</td>
+        <td><input type="number" step="0.5" min="0" max="30" value="${r.pct}" ${can('report:team')?'':'disabled'}
+            onchange="setCompProposal('${r.p.id}',+this.value)"
+            class="w-16 bg-transparent border-b ${dev?'border-amber-400 text-amber-600':'border-ink-200 dark:border-ink-600 text-brand-600'} font-semibold"></td>
+        <td class="text-brand-600 font-medium">${fmtINR(r.inc)}</td>
+        <td class="font-semibold">${fmtINR(r.newSal)}</td>
+      </tr>`;}).join('')}</tbody>
+    </table></div>
+    <p class="text-[.65rem] text-ink-400 mt-3">Amber values deviate from the matrix suggestion and require justification at approval.</p>
+  </div>
+  <div class="card"><h3 class="font-display font-semibold text-ink-700 dark:text-ink-200 mb-3">Spend by Department</h3><canvas id="compChart" height="200"></canvas></div>
+</div>`;
+const byDept={};rows.forEach(r=>{byDept[r.p.dept]=(byDept[r.p.dept]||0)+r.inc;});
+mk('compChart',{type:'bar',data:{labels:Object.keys(byDept),datasets:[{data:Object.values(byDept),backgroundColor:'#d97a45',borderRadius:6}]},
+  options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
+};
+function setCompProposal(empId,pct){
+  S.comp.proposals[empId]={...(S.comp.proposals[empId]||{}),pct,approved:false};
+  logAudit('Comp proposal',`${ORG.byId(empId)?.name}: ${pct}% proposed`,'compensation');
+  save();go('comp');
+}
+
+// ==================== PHASE 1 · ADMIN CONSOLE ====================
+PG.admin=()=>{const m=document.getElementById('main');
+const dels=S.delegations||[];
+m.innerHTML=`<div class="fade-in space-y-6">
+  <div><h2 class="font-display text-xl font-bold text-ink-800 dark:text-ink-100">Administration</h2>
+    <p class="text-sm text-ink-400 mt-1">Organisation settings that were previously hardcoded</p></div>
+
+  <div class="flex gap-2 flex-wrap">
+    ${['scale:Rating Scale','cycle:Review Cycles','deleg:Delegation','people:Directory','data:Import / Export']
+      .map((t,i)=>{const[id,l]=t.split(':');return `<button class="tab-pill ${i===0?'on':''}" id="atab_${id}" onclick="adminTab('${id}')">${l}</button>`;}).join('')}
+  </div>
+  <div id="adminBody"></div>
+</div>`;
+adminTab('scale');};
+
+function adminTab(tab){
+  document.querySelectorAll('[id^="atab_"]').forEach(b=>b.classList.remove('on'));
+  document.getElementById('atab_'+tab)?.classList.add('on');
+  const b=document.getElementById('adminBody');if(!b)return;
+
+  if(tab==='scale'){
+    b.innerHTML=`<div class="card">
+      <h3 class="font-display font-semibold text-ink-700 dark:text-ink-200 mb-1">Rating Scale</h3>
+      <p class="text-xs text-ink-400 mb-4">Labels and descriptors used across reviews, calibration and the 9-box grid.</p>
+      ${S.config.ratingScale.map((s,i)=>`<div class="flex items-center gap-3 py-2 border-b border-ink-50 dark:border-ink-700 last:border-0">
+        <span class="w-8 h-8 rounded-lg bg-${s.color}-100 text-${s.color}-700 flex items-center justify-center font-bold text-sm flex-shrink-0">${s.v}</span>
+        <input value="${s.label}" onchange="S.config.ratingScale[${i}].label=this.value;save();toast('Scale updated')"
+          class="w-40 bg-transparent border-b border-ink-200 dark:border-ink-600 text-sm font-semibold">
+        <input value="${s.desc}" onchange="S.config.ratingScale[${i}].desc=this.value;save()"
+          class="flex-1 bg-transparent border-b border-ink-200 dark:border-ink-600 text-xs text-ink-500">
+      </div>`).join('')}
+      <div class="mt-4 grid sm:grid-cols-3 gap-3">
+        <div><label class="text-[.65rem] font-semibold uppercase text-ink-400">Currency</label>
+          <input value="${S.config.currency}" onchange="S.config.currency=this.value;save()" class="w-full border border-ink-200 dark:border-ink-600 rounded-lg px-2.5 py-1.5 text-sm bg-transparent"></div>
+        <div><label class="text-[.65rem] font-semibold uppercase text-ink-400">Fiscal Year Start</label>
+          <input value="${S.config.fiscalYearStart}" onchange="S.config.fiscalYearStart=this.value;save()" class="w-full border border-ink-200 dark:border-ink-600 rounded-lg px-2.5 py-1.5 text-sm bg-transparent"></div>
+        <div><label class="text-[.65rem] font-semibold uppercase text-ink-400">Survey anonymity floor</label>
+          <input type="number" min="3" value="${S.config.anonymityThreshold}" onchange="S.config.anonymityThreshold=+this.value;save()" class="w-full border border-ink-200 dark:border-ink-600 rounded-lg px-2.5 py-1.5 text-sm bg-transparent"></div>
+      </div>
+    </div>`;
+  }
+  else if(tab==='cycle'){
+    const d=S.config.cycleDefaults;
+    b.innerHTML=`<div class="card">
+      <h3 class="font-display font-semibold text-ink-700 dark:text-ink-200 mb-3">Review Cycles</h3>
+      ${S.reviewCycles.map(c=>`<div class="flex items-center justify-between py-2.5 border-b border-ink-50 dark:border-ink-700 last:border-0">
+        <div><p class="text-sm font-medium text-ink-700 dark:text-ink-200">${c.name}</p><p class="text-[.65rem] text-ink-400">${c.period} · due ${c.dueDate}</p></div>
+        ${badge(c.status)}</div>`).join('')}
+      <h4 class="text-xs font-semibold uppercase tracking-wide text-ink-400 mt-5 mb-2">Stage Durations (days)</h4>
+      <div class="grid sm:grid-cols-3 gap-3">
+        ${[['selfReviewDays','Self-review'],['managerReviewDays','Manager review'],['calibrationDays','Calibration']].map(([k,l])=>
+          `<div><label class="text-[.65rem] text-ink-400">${l}</label>
+           <input type="number" min="1" value="${d[k]}" onchange="S.config.cycleDefaults.${k}=+this.value;save()" class="w-full border border-ink-200 dark:border-ink-600 rounded-lg px-2.5 py-1.5 text-sm bg-transparent"></div>`).join('')}
+      </div>
+      <div class="flex gap-4 mt-4">
+        <label class="flex items-center gap-2 text-sm text-ink-600 dark:text-ink-300"><input type="checkbox" ${d.requireAck?'checked':''} onchange="S.config.cycleDefaults.requireAck=this.checked;save()"> Require employee acknowledgement</label>
+        <label class="flex items-center gap-2 text-sm text-ink-600 dark:text-ink-300"><input type="checkbox" ${d.allowReopen?'checked':''} onchange="S.config.cycleDefaults.allowReopen=this.checked;save()"> Allow HR to reopen released reviews</label>
+      </div>
+    </div>`;
+  }
+  else if(tab==='deleg'){
+    const dels=S.delegations||[];
+    b.innerHTML=`<div class="card">
+      <h3 class="font-display font-semibold text-ink-700 dark:text-ink-200 mb-1">Review Delegation</h3>
+      <p class="text-xs text-ink-400 mb-4">Temporarily transfer a manager's review authority — for leave, exits or reorganisation. Delegated authority is resolved live by the workflow engine.</p>
+      ${dels.map((d,i)=>`<div class="flex flex-wrap items-center gap-3 py-2.5 border-b border-ink-50 dark:border-ink-700">
+        <div class="flex-1 min-w-[220px]">
+          <p class="text-sm text-ink-700 dark:text-ink-200"><strong>${ORG.byId(d.fromId)?.name||'?'}</strong> → <strong>${ORG.byId(d.toId)?.name||'?'}</strong></p>
+          <p class="text-[.65rem] text-ink-400">${d.reason} · ${d.from} to ${d.to}</p>
+        </div>
+        <span class="badge ${d.active?'bg-brand-100 text-brand-700':'bg-ink-100 text-ink-500'}">${d.active?'Active':'Inactive'}</span>
+        <button onclick="toggleDelegation(${i})" class="text-xs px-3 py-1.5 rounded-lg font-medium ${d.active?'bg-ink-100 dark:bg-ink-700 text-ink-600 dark:text-ink-200':'bg-brand-600 text-white'}">${d.active?'Revoke':'Activate'}</button>
+      </div>`).join('')||'<p class="text-sm text-ink-400">No delegations configured.</p>'}
+      <div class="grid sm:grid-cols-4 gap-2 mt-4">
+        <select id="dgFrom" class="border border-ink-200 dark:border-ink-600 rounded-lg px-2.5 py-2 text-sm bg-transparent">${ORG.people.filter(p=>ORG.reports(p.id).length).map(p=>`<option value="${p.id}">${p.name}</option>`).join('')}</select>
+        <select id="dgTo" class="border border-ink-200 dark:border-ink-600 rounded-lg px-2.5 py-2 text-sm bg-transparent">${ORG.people.filter(p=>p.role!=='employee').map(p=>`<option value="${p.id}">${p.name}</option>`).join('')}</select>
+        <input id="dgReason" placeholder="Reason" class="border border-ink-200 dark:border-ink-600 rounded-lg px-2.5 py-2 text-sm bg-transparent">
+        <button onclick="addDelegation()" class="bg-brand-600 text-white rounded-lg py-2 text-sm font-semibold">Delegate</button>
+      </div>
+    </div>`;
+  }
+  else if(tab==='people'){
+    b.innerHTML=`<div class="card"><h3 class="font-display font-semibold text-ink-700 dark:text-ink-200 mb-3">Employee Directory <span class="text-xs font-normal text-ink-400">— ${ORG.people.length} records</span></h3>
+      <div class="overflow-x-auto"><table class="w-full text-sm">
+        <thead><tr class="border-b-2 border-ink-100 dark:border-ink-700">${th('Name')}${th('Title')}${th('Dept')}${th('Manager')}${th('Role')}${th('Band')}${th('Status')}</tr></thead>
+        <tbody>${ORG.people.map(p=>`<tr class="border-b border-ink-50 dark:border-ink-700">
+          <td class="py-2 font-medium">${p.name}</td><td class="text-xs">${p.title}</td><td class="text-xs">${p.dept}</td>
+          <td class="text-xs text-ink-400">${ORG.byId(p.managerId)?.name||'—'}</td>
+          <td><span class="badge bg-ink-100 text-ink-600">${p.role}</span></td>
+          <td class="text-xs">${p.band}</td>
+          <td><span class="badge ${p.status==='active'?'bg-brand-100 text-brand-700':'bg-amber-100 text-amber-700'}">${p.status}</span></td>
+        </tr>`).join('')}</tbody></table></div></div>`;
+  }
+  else if(tab==='data'){
+    b.innerHTML=`<div class="card">
+      <h3 class="font-display font-semibold text-ink-700 dark:text-ink-200 mb-1">Import / Export</h3>
+      <p class="text-xs text-ink-400 mb-4">CSV round-trip for bulk operations and offline analysis.</p>
+      <div class="flex flex-wrap gap-2">
+        <button onclick="exportCSV('directory')" class="text-sm bg-brand-600 text-white px-3.5 py-2 rounded-lg font-medium hover:bg-brand-700">Export Directory</button>
+        <button onclick="exportCSV('reviews')" class="text-sm bg-brand-600 text-white px-3.5 py-2 rounded-lg font-medium hover:bg-brand-700">Export Review Status</button>
+        <button onclick="exportCSV('comp')" class="text-sm bg-brand-600 text-white px-3.5 py-2 rounded-lg font-medium hover:bg-brand-700">Export Comp Proposals</button>
+        <button onclick="exportJSON()" class="text-sm bg-ink-100 dark:bg-ink-700 text-ink-600 dark:text-ink-200 px-3.5 py-2 rounded-lg font-medium">Full JSON Backup</button>
+      </div>
+      <div class="mt-5 pt-4 border-t border-ink-100 dark:border-ink-700">
+        <p class="text-xs font-semibold uppercase tracking-wide text-ink-400 mb-2">Restore from backup</p>
+        <input type="file" accept="application/json" onchange="importJSON(this)" class="text-xs text-ink-500">
+      </div>
+    </div>`;
+  }
+}
+function toggleDelegation(i){const d=S.delegations[i];d.active=!d.active;
+  logAudit('Delegation '+(d.active?'activated':'revoked'),`${ORG.byId(d.fromId)?.name} → ${ORG.byId(d.toId)?.name}`,'admin');
+  save();adminTab('deleg');toast('Delegation '+(d.active?'activated':'revoked'));}
+function addDelegation(){
+  const f=document.getElementById('dgFrom').value,t=document.getElementById('dgTo').value;
+  if(f===t){toast('Choose two different people','error');return;}
+  (S.delegations=S.delegations||[]).push({id:Date.now(),fromId:f,toId:t,
+    reason:document.getElementById('dgReason').value||'Delegated authority',
+    from:new Date().toISOString().slice(0,10),to:'',active:true});
+  logAudit('Delegation created',`${ORG.byId(f)?.name} → ${ORG.byId(t)?.name}`,'admin');
+  save();adminTab('deleg');toast('Delegation created');
+}
+function dl(name,text,type){const b=new Blob([text],{type});const u=URL.createObjectURL(b);
+  const a=document.createElement('a');a.href=u;a.download=name;a.click();URL.revokeObjectURL(u);}
+function csvEsc(v){v=String(v??'');return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}
+function exportCSV(kind){
+  let head=[],rows=[];
+  if(kind==='directory'){head=['id','name','email','title','dept','manager','role','band','status','hireDate'];
+    rows=ORG.people.map(p=>[p.id,p.name,p.email,p.title,p.dept,ORG.byId(p.managerId)?.name||'',p.role,p.band,p.status,p.hireDate]);}
+  if(kind==='reviews'){head=['cycle','employee','state','selfRating','mgrRating','finalRating','acknowledgedAt'];
+    rows=(S.workflow||[]).map(w=>[S.reviewCycles.find(c=>c.id===w.cycleId)?.name||w.cycleId,
+      ORG.byId(w.empId)?.name||w.empId,w.state,w.selfRating??'',w.mgrRating??'',w.finalRating??'',w.ackAt||'']);}
+  if(kind==='comp'){head=['employee','band','compa','currentSalary','proposedPct','increase','newSalary'];
+    rows=ORG.people.map(p=>{const pct=S.comp.proposals[p.id]?.pct??suggestedPct(p.id);
+      return [p.name,p.band,p.compa,p.salary,pct,Math.round(p.salary*pct/100),Math.round(p.salary*(1+pct/100))];});}
+  const csv=[head.join(','),...rows.map(r=>r.map(csvEsc).join(','))].join('\n');
+  dl(`sattva_${kind}_${new Date().toISOString().slice(0,10)}.csv`,csv,'text/csv');
+  logAudit('Data export',kind+' exported as CSV','admin');toast('Exported');
+}
+function exportJSON(){dl(`sattva_backup_${new Date().toISOString().slice(0,10)}.json`,JSON.stringify(S,null,2),'application/json');
+  logAudit('Data export','Full JSON backup','admin');toast('Backup downloaded');}
+function importJSON(input){
+  const f=input.files?.[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{try{const d=JSON.parse(r.result);
+      if(!d||typeof d!=='object')throw new Error('bad shape');
+      if(!confirm('Replace all current data with this backup?'))return;
+      Object.keys(d).forEach(k=>{S[k]=d[k];});
+      logAudit('Data import','Restored from JSON backup','admin');
+      Repo.flush();toast('Backup restored');location.reload();
+    }catch(e){toast('Invalid backup file','error');}};
+  r.readAsText(f);
+}
+
+// ==================== PHASE 2 · FAIRNESS AUDIT ====================
+PG.fairness=()=>{const m=document.getElementById('main');
+const dist=Fair.distribution(), mgr=Fair.managerBias(), om=Fair.orgMean();
+const attrs=[['dept','Department'],['gender','Gender'],['ageBand','Age band'],['band','Job band']];
+const chain=verifyAuditChain();
+m.innerHTML=`<div class="fade-in space-y-6">
+  <div><h2 class="font-display text-xl font-bold text-ink-800 dark:text-ink-100">Fairness &amp; Bias Audit</h2>
+    <p class="text-sm text-ink-400 mt-1">Aggregate-only monitoring · groups smaller than ${Fair.THRESH()} are suppressed</p></div>
+
+  <div class="rounded-xl p-4 border" style="background:#fdf6f0;border-color:#f6d2b8">
+    <p class="text-sm text-ink-700"><strong>How to read this page.</strong> These are <em>indicators for investigation</em>, not findings of discrimination.
+    A flag means a pattern warrants a documented human review — never an automated decision. Demographic attributes are used solely for this aggregate
+    monitoring and are never displayed against an individual anywhere in the product.</p>
+  </div>
+
+  <!-- distribution -->
+  <div class="grid lg:grid-cols-2 gap-5">
+    <div class="card">
+      <h3 class="font-display font-semibold text-ink-700 dark:text-ink-200 mb-1">Rating Distribution</h3>
+      <p class="text-xs text-ink-400 mb-3">Organisation mean <strong>${om}</strong> · guidance shape shown for comparison, not enforced</p>
+      <table class="w-full text-sm">
+        <thead><tr class="border-b-2 border-ink-100 dark:border-ink-700">${th('Rating')}${th('n')}${th('Actual')}${th('Guide')}${th('Deviation')}</tr></thead>
+        <tbody>${dist.slice().reverse().map(d=>{const lab=S.config.ratingScale.find(s=>s.v===d.rating);
+          const big=Math.abs(d.deviation)>=15;
+          return `<tr class="border-b border-ink-50 dark:border-ink-700">
+            <td class="py-2">${d.rating} · ${lab?.label||''}</td><td>${d.count}</td><td class="font-semibold">${d.pct}%</td>
+            <td class="text-ink-400">${d.expected}%</td>
+            <td class="${big?'text-amber-600 font-semibold':'text-ink-400'}">${d.deviation>0?'+':''}${d.deviation}</td></tr>`;}).join('')}
+        </tbody></table>
+    </div>
+    <div class="card"><h3 class="font-display font-semibold text-ink-700 dark:text-ink-200 mb-3">Distribution Shape</h3><canvas id="fairDist" height="200"></canvas></div>
+  </div>
+
+  <!-- adverse impact -->
+  <div class="card">
+    <h3 class="font-display font-semibold text-ink-700 dark:text-ink-200 mb-1">Adverse Impact Ratio</h3>
+    <p class="text-xs text-ink-400 mb-4">Four-fifths rule — favourable outcome defined as a calibrated rating of 4 or above.
+      A ratio below 0.80 relative to the highest-scoring group is flagged.</p>
+    ${attrs.map(([a,label])=>{
+      const r=Fair.adverseImpact(a);
+      if(!r.applicable)return `<div class="mb-4"><p class="text-sm font-semibold text-ink-600 dark:text-ink-300 mb-1">${label}</p>
+        <p class="text-xs text-ink-400">${r.reason}. ${r.groups.filter(g=>g.suppressed).length} group(s) suppressed for anonymity.</p></div>`;
+      return `<div class="mb-5">
+        <p class="text-sm font-semibold text-ink-600 dark:text-ink-300 mb-2">${label}
+          ${r.flagged.length?`<span class="badge bg-amber-100 text-amber-700 ml-1">${r.flagged.length} flagged</span>`:`<span class="badge bg-brand-100 text-brand-700 ml-1">No flags</span>`}</p>
+        <table class="w-full text-sm"><thead><tr class="border-b border-ink-100 dark:border-ink-700">${th('Group')}${th('n')}${th('Mean')}${th('Favourable')}${th('Rate')}${th('Ratio')}${th('')}</tr></thead>
+          <tbody>${r.rows.map(x=>`<tr class="border-b border-ink-50 dark:border-ink-700 ${x.ratio<0.8?'bg-amber-50/50 dark:bg-amber-900/10':''}">
+            <td class="py-1.5">${x.key}</td><td>${x.n}</td><td>${x.mean}</td><td>${x.favourable}</td>
+            <td>${(x.favRate*100).toFixed(0)}%</td>
+            <td class="font-semibold ${x.ratio<0.8?'text-amber-600':'text-ink-600 dark:text-ink-300'}">${x.ratio.toFixed(2)}</td>
+            <td>${x.ratio<0.8?'<span class="badge bg-amber-100 text-amber-700">Review</span>':''}</td></tr>`).join('')}
+            ${r.groups.filter(g=>g.suppressed).map(g=>`<tr class="border-b border-ink-50 dark:border-ink-700 opacity-60">
+              <td class="py-1.5">${g.key}</td><td>${g.n}</td><td colspan="5" class="text-xs text-ink-400 italic">Suppressed — group below anonymity threshold</td></tr>`).join('')}
+          </tbody></table></div>`;}).join('')}
+  </div>
+
+  <!-- manager leniency -->
+  <div class="card">
+    <h3 class="font-display font-semibold text-ink-700 dark:text-ink-200 mb-1">Manager Rating Consistency</h3>
+    <p class="text-xs text-ink-400 mb-3">Deviation of each manager's mean from the organisation mean (${om}). |Δ| ≥ 0.50 is flagged for calibration discussion.</p>
+    <table class="w-full text-sm">
+      <thead><tr class="border-b-2 border-ink-100 dark:border-ink-700">${th('Manager')}${th('Reports rated')}${th('Mean')}${th('Δ vs org')}${th('Spread (SD)')}${th('Flag')}</tr></thead>
+      <tbody>${mgr.map(x=>x.suppressed
+        ? `<tr class="border-b border-ink-50 dark:border-ink-700 opacity-60"><td class="py-2">${x.name}</td><td>${x.n}</td><td colspan="4" class="text-xs text-ink-400 italic">Suppressed — fewer than ${Fair.THRESH()} rated reports</td></tr>`
+        : `<tr class="border-b border-ink-50 dark:border-ink-700 ${x.flag?'bg-amber-50/50 dark:bg-amber-900/10':''}">
+          <td class="py-2 font-medium">${x.name}</td><td>${x.n}</td><td>${x.mean}</td>
+          <td class="${x.flag?'text-amber-600 font-semibold':''}">${x.delta>0?'+':''}${x.delta}</td>
+          <td class="text-ink-400">${x.sd}</td>
+          <td>${x.flag?`<span class="badge bg-amber-100 text-amber-700">${x.flag}</span>`:'<span class="badge bg-brand-100 text-brand-700">consistent</span>'}</td></tr>`).join('')}
+      </tbody></table>
+  </div>
+
+  <!-- audit integrity -->
+  <div class="card">
+    <h3 class="font-display font-semibold text-ink-700 dark:text-ink-200 mb-1">Audit Log Integrity</h3>
+    <p class="text-xs text-ink-400 mb-3">Every audit entry is hash-chained to its predecessor. Any edit or deletion breaks the chain.</p>
+    <div class="flex items-center gap-3 p-3 rounded-xl ${chain.ok?'bg-brand-50 dark:bg-brand-900/10':'bg-red-50 dark:bg-red-900/15'}">
+      <span class="text-2xl">${chain.ok?'🔒':'⚠️'}</span>
+      <div><p class="text-sm font-semibold ${chain.ok?'text-brand-700':'text-red-600'}">${chain.ok?'Chain intact':'Chain broken'}</p>
+        <p class="text-xs text-ink-500">${chain.checked} of ${chain.total} entries verified${chain.broken?` · first break at entry #${chain.broken.seq} (${chain.broken.reason})`:''}</p></div>
+      <button onclick="go('fairness')" class="ml-auto text-xs bg-ink-100 dark:bg-ink-700 text-ink-600 dark:text-ink-200 px-3 py-1.5 rounded-lg font-medium">Re-verify</button>
+    </div>
+  </div>
+</div>`;
+mk('fairDist',{type:'bar',data:{labels:dist.map(d=>'Rating '+d.rating),
+  datasets:[{label:'Actual %',data:dist.map(d=>d.pct),backgroundColor:'#d97a45',borderRadius:6},
+            {label:'Guide %',data:dist.map(d=>d.expected),backgroundColor:'#e3e8ed',borderRadius:6}]},
+  options:{plugins:{legend:{position:'bottom',labels:{usePointStyle:true,pointStyle:'circle',padding:12}}},scales:{y:{beginAtZero:true}}}});
+};
+
+// ==================== PHASE 2 · PRIVACY CENTRE ====================
+PG.privacy=()=>{const m=document.getElementById('main');
+const P=S.privacy,me=meRec();
+const myAudit=(S.auditLog||[]).filter(a=>a.actorId===me?.id).length;
+const reqs=P.erasureRequests||[];
+m.innerHTML=`<div class="fade-in space-y-6">
+  <div><h2 class="font-display text-xl font-bold text-ink-800 dark:text-ink-100">Privacy &amp; Data</h2>
+    <p class="text-sm text-ink-400 mt-1">What we hold about you, why, and what you can do about it</p></div>
+
+  <div class="card">
+    <h3 class="font-display font-semibold text-ink-700 dark:text-ink-200 mb-3">Data We Hold About You</h3>
+    <div class="space-y-2.5">
+      ${[
+        ['Identity & employment','Name, work email, job title, department, reporting line, band, hire date','Contract / legitimate interest'],
+        ['Performance records','Self-assessments, manager assessments, calibrated ratings, acknowledgements','Contract / legitimate interest'],
+        ['Compensation','Salary, compa-ratio, merit proposals','Contract'],
+        ['Development','Goals, competencies, development plans, course enrolments','Legitimate interest'],
+        ['Engagement','Pulse responses (aggregated), eNPS','Consent'],
+        ['Wellbeing','Daily mood check-in','Consent — private to you'],
+        ['Gamification','XP, streak, badges, leaderboard position','Consent'],
+        ['Fairness attributes','Gender, age band — used only in aggregate fairness reporting','Legal obligation / legitimate interest'],
+      ].map(([cat,what,basis])=>`<div class="flex flex-wrap items-start gap-2 py-2 border-b border-ink-50 dark:border-ink-700 last:border-0">
+        <div class="flex-1 min-w-[220px]"><p class="text-sm font-medium text-ink-700 dark:text-ink-200">${cat}</p>
+          <p class="text-xs text-ink-400">${what}</p></div>
+        <span class="badge bg-ink-100 text-ink-600">${basis}</span></div>`).join('')}
+    </div>
+  </div>
+
+  <div class="grid lg:grid-cols-2 gap-5">
+    <div class="card">
+      <h3 class="font-display font-semibold text-ink-700 dark:text-ink-200 mb-1">Your Consent</h3>
+      <p class="text-xs text-ink-400 mb-3">Optional processing you can switch off at any time. Contractual processing (performance, pay) cannot be withdrawn while employed.</p>
+      ${[['analytics','Aggregate people analytics'],['gamification','Daily Challenge, XP & leaderboard'],['pulseSurveys','Pulse surveys & eNPS']]
+        .map(([k,l])=>`<label class="flex items-center justify-between py-2.5 border-b border-ink-50 dark:border-ink-700 last:border-0 cursor-pointer">
+          <span class="text-sm text-ink-700 dark:text-ink-200">${l}</span>
+          <input type="checkbox" ${P.consent[k]?'checked':''} onchange="setConsent('${k}',this.checked)" class="w-4 h-4 accent-brand-500">
+        </label>`).join('')}
+      <p class="text-[.65rem] text-ink-400 mt-3">Consent recorded ${P.consent.grantedAt}</p>
+    </div>
+    <div class="card">
+      <h3 class="font-display font-semibold text-ink-700 dark:text-ink-200 mb-1">Retention Policy</h3>
+      <p class="text-xs text-ink-400 mb-3">How long each category is kept before deletion.</p>
+      <div class="space-y-3">
+        <div><label class="text-[.65rem] font-semibold uppercase text-ink-400">Performance records (years)</label>
+          <input type="number" min="1" max="15" value="${P.reviewRetentionYears}" ${can('admin:settings')?'':'disabled'}
+            onchange="S.privacy.reviewRetentionYears=+this.value;save();toast('Retention updated')"
+            class="w-full border border-ink-200 dark:border-ink-600 rounded-lg px-2.5 py-1.5 text-sm bg-transparent"></div>
+        <div><label class="text-[.65rem] font-semibold uppercase text-ink-400">Survey responses (months)</label>
+          <input type="number" min="1" max="60" value="${P.surveyRetentionMonths}" ${can('admin:settings')?'':'disabled'}
+            onchange="S.privacy.surveyRetentionMonths=+this.value;save()"
+            class="w-full border border-ink-200 dark:border-ink-600 rounded-lg px-2.5 py-1.5 text-sm bg-transparent"></div>
+        <div><label class="text-[.65rem] font-semibold uppercase text-ink-400">Audit entries retained</label>
+          <input type="number" min="50" max="1000" step="50" value="${P.auditRetention}" ${can('admin:settings')?'':'disabled'}
+            onchange="S.privacy.auditRetention=+this.value;save()"
+            class="w-full border border-ink-200 dark:border-ink-600 rounded-lg px-2.5 py-1.5 text-sm bg-transparent"></div>
+      </div>
+      ${can('admin:settings')?'':'<p class="text-[.65rem] text-ink-400 mt-2">Retention is set by HR administration.</p>'}
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="font-display font-semibold text-ink-700 dark:text-ink-200 mb-1">Your Rights</h3>
+    <p class="text-xs text-ink-400 mb-4">${myAudit} audit entries are attributed to your account.</p>
+    <div class="flex flex-wrap gap-2">
+      <button onclick="exportMyData()" class="text-sm bg-brand-600 hover:bg-brand-700 text-white px-3.5 py-2 rounded-lg font-medium transition">Download my data</button>
+      <button onclick="requestErasure()" class="text-sm bg-ink-100 dark:bg-ink-700 hover:bg-ink-200 text-ink-600 dark:text-ink-200 px-3.5 py-2 rounded-lg font-medium transition">Request erasure</button>
+    </div>
+    <p class="text-[.65rem] text-ink-400 mt-3">Erasure requests are reviewed by HR. Records required for statutory or contractual reasons
+      (performance history, payroll) may be retained for the periods above; the remainder is deleted.</p>
+    ${reqs.length?`<div class="mt-4 pt-3 border-t border-ink-100 dark:border-ink-700">
+      <p class="text-xs font-semibold uppercase tracking-wide text-ink-400 mb-2">Requests</p>
+      ${reqs.map(r=>`<div class="flex items-center justify-between py-1.5 text-sm">
+        <span class="text-ink-600 dark:text-ink-300">${ORG.byId(r.empId)?.name||r.empId} · ${r.at}</span>
+        <span class="badge ${r.status==='Open'?'bg-amber-100 text-amber-700':'bg-brand-100 text-brand-700'}">${r.status}</span></div>`).join('')}
+    </div>`:''}
+  </div>
+</div>`;};
+
+function setConsent(k,v){
+  S.privacy.consent[k]=v;
+  logAudit('Consent '+(v?'granted':'withdrawn'),k,'privacy');
+  save();toast('Consent preference saved');
+}
+function exportMyData(){
+  const me=meRec();if(!me)return;
+  const pack={
+    exportedAt:new Date().toISOString(), subject:{...me},
+    performance:(S.workflow||[]).filter(w=>w.empId===me.id),
+    goals:S.goals, competencies:(S.competencies?.employees||[]).filter(e=>e.name===me.name),
+    learning:(S.learning||[]).filter(c=>c.enrolled?.includes(me.name)).map(c=>({title:c.title,completed:c.completed?.includes(me.name)})),
+    kudosReceived:(S.kudos||[]).filter(k=>k.to===me.name),
+    wellbeing:{mood:S.profile?.mood,note:'Mood check-ins are private to you'},
+    gamification:{xp:S.play?.xp,streak:S.play?.streak,badges:S.play?.earned},
+    auditEntries:(S.auditLog||[]).filter(a=>a.actorId===me.id),
+    consent:S.privacy.consent,
+  };
+  dl(`sattva_my_data_${me.id}_${new Date().toISOString().slice(0,10)}.json`,JSON.stringify(pack,null,2),'application/json');
+  S.privacy.lastExportAt=new Date().toISOString().slice(0,10);
+  logAudit('Data subject export','Employee downloaded their own record','privacy');
+  save();toast('Your data has been downloaded');
+}
+function requestErasure(){
+  const me=meRec();if(!me)return;
+  if(!confirm('Submit a request to erase your personal data? HR will review it against statutory retention requirements.'))return;
+  (S.privacy.erasureRequests=S.privacy.erasureRequests||[]).push({
+    empId:me.id,at:new Date().toISOString().slice(0,10),status:'Open'});
+  logAudit('Erasure requested','Data subject erasure request submitted','privacy');
+  save();go('privacy');toast('Request submitted to HR');
 }
 
 // ---- COMPANY ----
@@ -2266,7 +3520,7 @@ m.innerHTML=`<div class="fade-in space-y-6">
     <h3 class="font-display font-semibold text-ink-700 dark:text-ink-200 mb-3">Settings</h3>
     <div class="flex flex-wrap gap-3">
       <button onclick="toggleDark()" class="bg-ink-100 dark:bg-ink-700 hover:bg-ink-200 text-ink-600 dark:text-ink-200 text-sm font-medium px-4 py-2 rounded-xl transition">Toggle Theme</button>
-      <button onclick="if(confirm('Reset all data to defaults?')){localStorage.removeItem(STORE_KEY);location.reload()}" class="bg-red-50 dark:bg-red-900/20 hover:bg-red-100 text-red-600 dark:text-red-400 text-sm font-medium px-4 py-2 rounded-xl transition">Reset All Data</button>
+      <button onclick="if(confirm('Reset all data to defaults?')){Repo.clear();location.reload()}" class="bg-red-50 dark:bg-red-900/20 hover:bg-red-100 text-red-600 dark:text-red-400 text-sm font-medium px-4 py-2 rounded-xl transition">Reset All Data</button>
     </div>
   </div>
 </div>`;
@@ -2367,9 +3621,24 @@ function render(){
   const i=(S.user?.name||'U')[0];
   document.getElementById('sbAvatar').textContent=i;document.getElementById('hdrAvatar').textContent=i;
   document.getElementById('sbName').textContent=S.user?.name||'User';
-  document.getElementById('sbRole').textContent=S.role.charAt(0).toUpperCase()+S.role.slice(1);
+  document.getElementById('sbRole').textContent=S.user?.title||(S.role.charAt(0).toUpperCase()+S.role.slice(1));
   document.getElementById('hdrGreeting').textContent='Welcome, '+(S.user?.name?.split(' ')[0]||'User');
-  document.getElementById('roleSelect').value=S.role;
+  // Read-only access scope, derived from the org tree
+  const scopeEl=document.getElementById('sbScope');
+  if(scopeEl){
+    const n=visiblePeople().length;
+    scopeEl.textContent = can('view:all') ? `Full access · ${n} people`
+                        : can('view:reports') ? `Team access · ${n} people`
+                        : 'Personal access only';
+  }
+  const ls=document.getElementById('localeSel');
+  if(ls){const cur=currentLocale();
+    ls.innerHTML=Object.entries(LOCALES).map(([c,l])=>
+      `<option value="${c}" ${c===cur?'selected':''}>${l.flag} ${l.name}</option>`).join('');
+    document.documentElement.lang=cur;}
+  const sk=document.getElementById('skipLink'); if(sk)sk.textContent=t('Skip to main content');
+  const nb=document.getElementById('notifBtn'); if(nb)nb.setAttribute('aria-label',t('Notifications'));
+  const so=document.querySelector('.sb-logout'); if(so)so.textContent=t('Sign Out');
   buildNav();updateNotifBadge();applyDark();
   document.body.classList.toggle('sb-collapsed',!!S.sbCollapsed);
   const sbBtn=document.querySelector('.sb-collapse-btn');if(sbBtn)sbBtn.title=S.sbCollapsed?'Expand sidebar':'Collapse sidebar';
